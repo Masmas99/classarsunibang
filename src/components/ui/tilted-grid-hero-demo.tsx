@@ -47,6 +47,7 @@ export default function TiltedGridHeroDemo() {
   return (
     <TiltedGridHero
       images={IMAGES}
+      gap={24}
       axis={54}
       className="h-[520px] sm:h-[560px] w-full rounded-none border-b border-border bg-background"
     >

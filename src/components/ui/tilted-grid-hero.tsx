@@ -26,6 +26,7 @@ type LayoutData = {
   camera: number;
   maxWidth: number;
   curveDeg: number;
+  gap: number;
 };
 
 function measureLayout(
@@ -39,8 +40,10 @@ function measureLayout(
   const isMobile = width < 640;
   const camera = isMobile ? 2.5 : 1.6;
   const curveDeg = isMobile ? 36 : Math.min(85, Math.max(5, desktopCurve));
-  const maxWidth = isMobile ? 70 : 55;
+  const maxWidth = isMobile ? 65 : 55;
   const bend = (curveDeg * Math.PI) / 180;
+  // Jarak (gap) antar foto diatur lega agar foto-foto terpisah jelas dan tidak menyatu
+  const effectiveGap = Math.max(gap, isMobile ? 24 : 18);
 
   const h = Math.min(
     (tile / 100) * height,
@@ -58,11 +61,12 @@ function measureLayout(
       camera,
       maxWidth,
       curveDeg,
+      gap: effectiveGap,
     };
   }
   const deg = (rad: number) => (rad * 180) / Math.PI;
   const unit = deg(h / radiusVal);
-  const pitch = (aspect + gap / 100) * unit;
+  const pitch = (aspect + effectiveGap / 100) * unit;
   const limit = deg(bend) + (aspect * unit) / 2;
   const columns = Math.min(60, Math.max(2, Math.ceil((2 * limit) / pitch)));
   const round = (n: number) => +n.toFixed(4);
@@ -79,6 +83,7 @@ function measureLayout(
     camera,
     maxWidth,
     curveDeg,
+    gap: effectiveGap,
   };
 }
 
@@ -105,7 +110,7 @@ export function TiltedGridHero({
   speed = 4,
   tileHeight = 26,
   aspectRatio = 16 / 9,
-  gap = 6,
+  gap = 24,
   axis = 56,
   curve = 72,
   fade = 12,
@@ -219,9 +224,9 @@ export function TiltedGridHero({
                 <div
                   key={k}
                   className={cn(
-                    "absolute top-0 overflow-hidden bg-muted shadow-sm",
-                    k === 0 && "rounded-l-lg",
-                    k === SLICES - 1 && "rounded-r-lg",
+                    "absolute top-0 overflow-hidden bg-muted shadow-md ring-1 ring-black/10",
+                    k === 0 && "rounded-l-xl",
+                    k === SLICES - 1 && "rounded-r-xl",
                   )}
                   style={{
                     left: u((aspectRatio - share) / 2),
