@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Class ARS UNIBANG",
-  description: "Website Resmi Class ARS UNIBANG",
+  title: "Class ARS UNIBANG — Administrasi Rumah Sakit",
+  description: "Website Resmi Class ARS UNIBANG - Fakultas Ilmu Kesehatan dan Sains",
 };
 
 export default function RootLayout({ children }) {
@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
       lang="id"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white text-[#111]">
+      <body className="min-h-full flex flex-col bg-white text-[#111] antialiased">
         <Header />
         <main className="flex-1 w-full">{children}</main>
       </body>

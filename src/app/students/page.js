@@ -7,19 +7,19 @@ export default function StudentsPage() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-10">
-      <section className="bg-white border border-[#e9e9e9] rounded-xl p-8 sm:p-12 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+      <section className="bg-white border border-[#e9e9e9] rounded-2xl sm:rounded-3xl p-6 sm:p-12 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
         <span className="inline-block text-[11px] font-semibold tracking-wider uppercase px-2.5 py-1 bg-[#f0f0f0] text-[#555] rounded-md mb-4">
-          Direktori
+          Direktori Mahasiswa
         </span>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#111]">
+        <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#111]">
           Daftar Siswa (Students)
         </h1>
         <p className="mt-2 text-sm sm:text-base text-[#666]">
-          Berikut adalah daftar data siswa kelas fadil.
+          Daftar mahasiswa aktif Class Administrasi Rumah Sakit (ARS) UNIBANG.
         </p>
 
-        <div className="mt-6 border border-[#e9e9e9] rounded-lg overflow-hidden">
+        <div className="mt-6 border border-[#e9e9e9] rounded-2xl overflow-hidden bg-white">
           <table className="w-full text-left text-sm">
             <thead className="bg-[#f9f9f9] border-b border-[#e9e9e9] text-[#444] text-xs uppercase font-semibold">
               <tr>
@@ -32,9 +32,9 @@ export default function StudentsPage() {
               {students.map((student) => (
                 <tr key={student.id} className="hover:bg-[#fafafa] transition-colors">
                   <td className="py-3 px-4 font-medium text-[#111]">{student.name}</td>
-                  <td className="py-3 px-4 text-[#555]">{student.role}</td>
+                  <td className="py-3 px-4 text-[#666]">{student.role}</td>
                   <td className="py-3 px-4">
-                    <span className="inline-block px-2 py-0.5 text-[11px] rounded bg-green-50 text-green-700 border border-green-200">
+                    <span className="inline-block px-2.5 py-0.5 text-[11px] font-medium rounded-full bg-green-50 text-green-700 border border-green-200">
                       {student.status}
                     </span>
                   </td>

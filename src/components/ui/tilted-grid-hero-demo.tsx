@@ -47,21 +47,18 @@ export default function TiltedGridHeroDemo() {
   return (
     <TiltedGridHero
       images={IMAGES}
-      gap={24}
-      axis={54}
-      className="h-[520px] sm:h-[560px] w-full rounded-none border-b border-border bg-background"
+      gap={6}
+      curve={80}
+      className="h-[520px] sm:h-[560px] w-full rounded-none border-b border-[#e9e9e9] bg-transparent"
     >
-      <div className="relative z-10 flex h-full flex-col items-center justify-between py-10 sm:py-12 text-center pointer-events-none">
+      <div className="relative z-10 flex h-full flex-col items-center justify-start pt-10 sm:pt-12 text-center pointer-events-none">
         <div className="px-6">
-          <h1 className="text-balance text-3xl sm:text-5xl font-medium tracking-tight text-foreground">
+          <h1 className="text-balance text-3xl sm:text-5xl font-medium tracking-tight text-[#111]">
             Welcome Class
             <br />
             ARS UNIBANG
           </h1>
         </div>
-        <p className="max-w-md text-balance px-6 text-xs sm:text-sm text-muted-foreground">
-          Dokumentasi dan kebersamaan seluruh mahasiswa Class ARS UNIBANG.
-        </p>
       </div>
     </TiltedGridHero>
   );

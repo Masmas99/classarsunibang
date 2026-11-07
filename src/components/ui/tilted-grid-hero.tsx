@@ -10,80 +10,43 @@ import { cn } from "@/lib/utils";
  * end image curves along its length, and the ends fade into the page.
  * ─────────────────────────────────────────────────────────────── */
 
+// Strips per tile for 3D desktop cylinder
 const SLICES = 16;
+const CAMERA = 1.6;
 
-function arc(bend: number, camera: number) {
-  return (camera - 1 + Math.cos(bend)) / (2 * camera * Math.sin(bend));
+function arc(bend: number) {
+  return (CAMERA - 1 + Math.cos(bend)) / (2 * CAMERA * Math.sin(bend));
 }
 
-type LayoutData = {
-  columns: number;
-  sweep: number;
-  unit: number;
-  limit: number;
-  r: number;
-  radius: string;
-  camera: number;
-  maxWidth: number;
-  curveDeg: number;
-  gap: number;
-};
+const MAX_WIDTH = 55;
 
-function measureLayout(
+function measure(
   width: number,
   height: number,
   tile: number,
   aspect: number,
   gap: number,
-  desktopCurve: number,
-): LayoutData {
-  const isMobile = width < 640;
-  const camera = isMobile ? 2.5 : 1.6;
-  const curveDeg = isMobile ? 36 : Math.min(85, Math.max(5, desktopCurve));
-  const maxWidth = isMobile ? 65 : 55;
-  const bend = (curveDeg * Math.PI) / 180;
-  // Jarak (gap) antar foto diatur lega agar foto-foto terpisah jelas dan tidak menyatu
-  const effectiveGap = Math.max(gap, isMobile ? 24 : 18);
-
+  bend: number,
+) {
   const h = Math.min(
     (tile / 100) * height,
-    ((maxWidth / 100) * width) / aspect,
+    ((MAX_WIDTH / 100) * width) / aspect,
   );
-  const radiusVal = width * arc(bend, camera);
-  if (!(h > 0) || !(radiusVal > 0)) {
-    return {
-      columns: 2,
-      sweep: 0,
-      unit: 0,
-      limit: 0,
-      r: 0,
-      radius: "0cqw",
-      camera,
-      maxWidth,
-      curveDeg,
-      gap: effectiveGap,
-    };
-  }
+  const radius = width * arc(bend);
+  if (!(h > 0) || !(radius > 0))
+    return { columns: 2, sweep: 0, unit: 0, limit: 0 };
   const deg = (rad: number) => (rad * 180) / Math.PI;
-  const unit = deg(h / radiusVal);
-  const pitch = (aspect + effectiveGap / 100) * unit;
+  const unit = deg(h / radius);
+  const pitch = (aspect + gap / 100) * unit;
   const limit = deg(bend) + (aspect * unit) / 2;
   const columns = Math.min(60, Math.max(2, Math.ceil((2 * limit) / pitch)));
   const round = (n: number) => +n.toFixed(4);
   const sweep = round((columns * pitch) / 2);
-  const r = 100 * arc(bend, camera);
-
   return {
     columns,
     sweep,
     unit: round(unit),
     limit: round(Math.min(sweep, limit)),
-    r,
-    radius: `${+r.toFixed(3)}cqw`,
-    camera,
-    maxWidth,
-    curveDeg,
-    gap: effectiveGap,
   };
 }
 
@@ -110,9 +73,9 @@ export function TiltedGridHero({
   speed = 4,
   tileHeight = 26,
   aspectRatio = 16 / 9,
-  gap = 24,
+  gap = 6,
   axis = 56,
-  curve = 72,
+  curve = 80,
   fade = 12,
   children,
   className,
@@ -122,8 +85,11 @@ export function TiltedGridHero({
   const id = React.useId().replace(/[^a-zA-Z0-9]/g, "");
   const orbit = `tgh-o-${id}`;
   const tile = `tgh-t-${id}`;
+  const bend = (Math.min(85, Math.max(5, curve)) * Math.PI) / 180;
 
-  const [layout, setLayout] = React.useState<LayoutData | null>(null);
+  const [layout, setLayout] = React.useState<ReturnType<typeof measure> | null>(
+    null,
+  );
   const [shown, setShown] = React.useState<Record<number, number>>({});
 
   React.useEffect(() => {
@@ -131,33 +97,33 @@ export function TiltedGridHero({
     if (!el) return;
     const ro = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect;
-      const next = measureLayout(width, height, tileHeight, aspectRatio, gap, curve);
+      const next = measure(width, height, tileHeight, aspectRatio, gap, bend);
       setLayout((prev) =>
         prev?.columns === next.columns &&
         prev.sweep === next.sweep &&
-        prev.unit === next.unit &&
-        prev.curveDeg === next.curveDeg
+        prev.unit === next.unit
           ? prev
           : next,
       );
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, [tileHeight, aspectRatio, gap, curve]);
+  }, [tileHeight, aspectRatio, gap, bend]);
 
   React.useEffect(() => {
     for (const { src } of images) new Image().src = src;
   }, [images]);
 
-  const currentLayout =
-    layout ?? measureLayout(1200, 560, tileHeight, aspectRatio, gap, curve);
-
-  const { columns, sweep, unit, limit, r, radius, camera, maxWidth } = currentLayout;
+  const { columns, sweep, unit, limit } =
+    layout ?? measure(1200, 560, tileHeight, aspectRatio, gap, bend);
 
   const u = (n: number) =>
     `calc(${+n.toFixed(4)} * min(${tileHeight}cqh, ${+(
-      maxWidth / aspectRatio
+      MAX_WIDTH / aspectRatio
     ).toFixed(4)}cqw))`;
+
+  const r = 100 * arc(bend);
+  const radius = `${+r.toFixed(3)}cqw`;
 
   const turn = (deg: number) =>
     `translateZ(${radius}) rotateY(${+deg.toFixed(4)}deg) translateZ(-${radius})`;
@@ -172,10 +138,12 @@ export function TiltedGridHero({
 
   const share = aspectRatio / SLICES;
   const duration = columns * speed;
-  const effectiveFade = maxWidth > 60 ? 16 : fade;
-  const mask = `linear-gradient(90deg,transparent,#000 ${effectiveFade}%,#000 ${
-    100 - effectiveFade
+  const mask = `linear-gradient(90deg,transparent,#000 ${fade}%,#000 ${
+    100 - fade
   }%,transparent)`;
+
+  // Duplikasi foto untuk infinite loop marquee pada tampilan mobile
+  const mobileImages = [...images, ...images];
 
   return (
     <div
@@ -186,12 +154,13 @@ export function TiltedGridHero({
     >
       <style>{css}</style>
 
+      {/* ── 1. Tampilan Desktop Asli (3D Cylinder Asli) ── */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+        className="hidden sm:block pointer-events-none absolute inset-0 transition-opacity duration-500"
         style={{
           opacity: layout ? 1 : 0,
-          perspective: `${+(r * camera).toFixed(3)}cqw`,
+          perspective: `${+(r * CAMERA).toFixed(3)}cqw`,
           perspectiveOrigin: `50% ${axis}%`,
           maskImage: mask,
           WebkitMaskImage: mask,
@@ -224,9 +193,9 @@ export function TiltedGridHero({
                 <div
                   key={k}
                   className={cn(
-                    "absolute top-0 overflow-hidden bg-muted shadow-md ring-1 ring-black/10",
-                    k === 0 && "rounded-l-xl",
-                    k === SLICES - 1 && "rounded-r-xl",
+                    "absolute top-0 overflow-hidden bg-muted shadow-sm",
+                    k === 0 && "rounded-l-lg",
+                    k === SLICES - 1 && "rounded-r-lg",
                   )}
                   style={{
                     left: u((aspectRatio - share) / 2),
@@ -256,6 +225,32 @@ export function TiltedGridHero({
             </div>
           );
         })}
+      </div>
+
+      {/* ── 2. Tampilan Mobile Sesuai classarsunibang.vercel.app (Flat, Anti-Gepeng) ── */}
+      <div
+        aria-hidden
+        className="sm:hidden pointer-events-none absolute inset-x-0 top-[50%] -translate-y-1/2 overflow-hidden py-2"
+        style={{
+          maskImage: "linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)",
+          WebkitMaskImage: "linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)",
+        }}
+      >
+        <div className="animate-marquee-smooth flex items-center gap-4 px-4">
+          {mobileImages.map((img, i) => (
+            <div
+              key={i}
+              className="w-[220px] h-[138px] shrink-0 rounded-xl overflow-hidden border border-neutral-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.06)] bg-neutral-100"
+            >
+              <img
+                src={img.src}
+                alt={img.alt ?? ""}
+                className="w-full h-full object-cover"
+                draggable={false}
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
       {children}

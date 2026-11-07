@@ -34,7 +34,7 @@ export default function GalleryPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
-      <section className="bg-white border border-[#e9e9e9] rounded-2xl p-6 sm:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+      <section className="bg-white border border-[#e9e9e9] rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
         <span className="inline-block text-[11px] font-semibold tracking-wider uppercase px-2.5 py-1 bg-[#f0f0f0] text-[#555] rounded-md mb-3">
           Dokumentasi
         </span>
@@ -49,7 +49,7 @@ export default function GalleryPage() {
           {photos.map((photo) => (
             <div
               key={photo.id}
-              className="border border-[#e9e9e9] rounded-xl overflow-hidden bg-[#fafafa] hover:border-[#ccc] hover:shadow-md transition-all group"
+              className="border border-[#e9e9e9] rounded-2xl overflow-hidden bg-[#fafafa] hover:border-[#ccc] hover:shadow-md transition-all group"
             >
               <div className="relative w-full h-52 overflow-hidden bg-[#eee]">
                 <img
