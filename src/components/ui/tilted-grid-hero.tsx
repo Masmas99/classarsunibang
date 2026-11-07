@@ -28,13 +28,16 @@ function measure(
   gap: number,
   bend: number,
 ) {
+  const isMobile = width < 640;
+  const maxWidth = isMobile ? 70 : MAX_WIDTH;
+  const effectiveTile = isMobile ? 32 : tile;
   const h = Math.min(
-    (tile / 100) * height,
-    ((MAX_WIDTH / 100) * width) / aspect,
+    (effectiveTile / 100) * height,
+    ((maxWidth / 100) * width) / aspect,
   );
   const radius = width * arc(bend);
   if (!(h > 0) || !(radius > 0))
-    return { columns: 2, sweep: 0, unit: 0, limit: 0 };
+    return { columns: 2, sweep: 0, unit: 0, limit: 0, width };
   const deg = (rad: number) => (rad * 180) / Math.PI;
   const unit = deg(h / radius);
   const pitch = (aspect + gap / 100) * unit;
@@ -47,6 +50,7 @@ function measure(
     sweep,
     unit: round(unit),
     limit: round(Math.min(sweep, limit)),
+    width,
   };
 }
 
@@ -117,9 +121,14 @@ export function TiltedGridHero({
   const { columns, sweep, unit, limit } =
     layout ?? measure(1200, 560, tileHeight, aspectRatio, gap, bend);
 
+  const isMobile = (layout?.width ?? 1200) < 640;
+  const currentTileHeight = isMobile ? 32 : tileHeight;
+  const currentMaxWidth = isMobile ? 70 : MAX_WIDTH;
+  const currentAxis = isMobile ? 60 : axis;
+
   const u = (n: number) =>
-    `calc(${+n.toFixed(4)} * min(${tileHeight}cqh, ${+(
-      MAX_WIDTH / aspectRatio
+    `calc(${+n.toFixed(4)} * min(${currentTileHeight}cqh, ${+(
+      currentMaxWidth / aspectRatio
     ).toFixed(4)}cqw))`;
 
   const r = 100 * arc(bend);
@@ -137,13 +146,11 @@ export function TiltedGridHero({
     `@media(prefers-reduced-motion:reduce){.${tile}{animation-play-state:paused}}`;
 
   const share = aspectRatio / SLICES;
-  const duration = columns * speed;
+  const effectiveSpeed = isMobile ? Math.max(speed * 2.5, 11) : speed;
+  const duration = columns * effectiveSpeed;
   const mask = `linear-gradient(90deg,transparent,#000 ${fade}%,#000 ${
     100 - fade
   }%,transparent)`;
-
-  // Duplikasi foto untuk infinite loop marquee pada tampilan mobile
-  const mobileImages = [...images, ...images];
 
   return (
     <div
@@ -154,14 +161,14 @@ export function TiltedGridHero({
     >
       <style>{css}</style>
 
-      {/* ── 1. Tampilan Desktop Asli (3D Cylinder Asli) ── */}
+      {/* ── 3D Cylinder Curvature (Desktop & Mobile) ── */}
       <div
         aria-hidden
-        className="hidden sm:block pointer-events-none absolute inset-0 transition-opacity duration-500"
+        className="pointer-events-none absolute inset-0 transition-opacity duration-500"
         style={{
           opacity: layout ? 1 : 0,
           perspective: `${+(r * CAMERA).toFixed(3)}cqw`,
-          perspectiveOrigin: `50% ${axis}%`,
+          perspectiveOrigin: `50% ${currentAxis}%`,
           maskImage: mask,
           WebkitMaskImage: mask,
         }}
@@ -175,11 +182,11 @@ export function TiltedGridHero({
               className={cn(tile, "absolute")}
               style={{
                 left: `calc(50% - ${u(aspectRatio / 2)})`,
-                top: `calc(${axis}% - ${u(0.5)})`,
+                top: `calc(${currentAxis}% - ${u(0.5)})`,
                 width: u(aspectRatio),
                 height: u(1),
                 transformStyle: "preserve-3d",
-                animation: `${orbit} ${duration}s linear ${-t * speed}s infinite`,
+                animation: `${orbit} ${duration}s linear ${-t * effectiveSpeed}s infinite`,
               }}
               onAnimationIteration={(e) => {
                 const lap = Math.round(e.elapsedTime / duration);
@@ -193,9 +200,9 @@ export function TiltedGridHero({
                 <div
                   key={k}
                   className={cn(
-                    "absolute top-0 overflow-hidden bg-muted shadow-sm",
-                    k === 0 && "rounded-l-lg",
-                    k === SLICES - 1 && "rounded-r-lg",
+                    "absolute top-0 overflow-hidden bg-muted shadow-md",
+                    k === 0 && "rounded-l-xl",
+                    k === SLICES - 1 && "rounded-r-xl",
                   )}
                   style={{
                     left: u((aspectRatio - share) / 2),
@@ -225,32 +232,6 @@ export function TiltedGridHero({
             </div>
           );
         })}
-      </div>
-
-      {/* ── 2. Tampilan Mobile Sesuai classarsunibang.vercel.app (Flat, Anti-Gepeng) ── */}
-      <div
-        aria-hidden
-        className="sm:hidden pointer-events-none absolute inset-x-0 top-[50%] -translate-y-1/2 overflow-hidden py-2"
-        style={{
-          maskImage: "linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)",
-          WebkitMaskImage: "linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)",
-        }}
-      >
-        <div className="animate-marquee-smooth flex items-center gap-4 px-4">
-          {mobileImages.map((img, i) => (
-            <div
-              key={i}
-              className="w-[220px] h-[138px] shrink-0 rounded-xl overflow-hidden border border-neutral-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.06)] bg-neutral-100"
-            >
-              <img
-                src={img.src}
-                alt={img.alt ?? ""}
-                className="w-full h-full object-cover"
-                draggable={false}
-              />
-            </div>
-          ))}
-        </div>
       </div>
 
       {children}

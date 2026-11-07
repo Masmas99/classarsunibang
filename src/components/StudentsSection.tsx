@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Search, X } from "lucide-react";
+import { motion } from "motion/react";
 
 export interface Student {
   id: number;
@@ -125,7 +126,13 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
 
   return (
     <section id="students" className="w-full py-12 sm:py-20 scroll-mt-24 border-t border-[#f0f0f0]">
-      <div className="w-full max-w-[1138px] mx-auto px-4 sm:px-8">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.12 }}
+        transition={{ type: "spring", stiffness: 220, damping: 24 }}
+        className="w-full max-w-[1138px] mx-auto px-4 sm:px-8"
+      >
         {/* Header Bar: Logo + CLASS ARS UNIBANG / STUDENTS */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div className="flex items-center gap-3.5">
@@ -215,7 +222,7 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {/* ── Modal Pop-up Foto & Detail Mahasiswa ── */}
       {selectedStudent && (

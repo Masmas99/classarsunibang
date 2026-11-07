@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "motion/react";
 
 export interface GalleryItem {
   id: number;
@@ -218,7 +219,13 @@ export default function GallerySection({ initialPhotos }: GallerySectionProps) {
 
   return (
     <section id="gallery" className="w-full py-12 sm:py-20 scroll-mt-24 border-t border-[#f0f0f0]">
-      <div className="w-full max-w-[1138px] mx-auto px-4 sm:px-8">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.08 }}
+        transition={{ type: "spring", stiffness: 220, damping: 24 }}
+        className="w-full max-w-[1138px] mx-auto px-4 sm:px-8"
+      >
         {/* Header Bar: Icon Gallery + CLASS ARS UNIBANG / GALLERY */}
         <div className="flex items-center gap-3.5 mb-6">
           <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-neutral-200/80 bg-white flex items-center justify-center p-2">
@@ -266,7 +273,7 @@ export default function GallerySection({ initialPhotos }: GallerySectionProps) {
             {col4.map(renderPhotoCard)}
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* ── Modal Lightbox Preview Foto (Full Gambar dengan Navigasi Next & Prev di Bawahnya) ── */}
       {selectedPhoto && (

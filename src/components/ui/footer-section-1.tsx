@@ -68,7 +68,7 @@ export default function Footer1() {
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+        viewport={{ once: true, amount: 0.15 }}
         variants={containerVariants}
         className="container mx-auto px-4 flex flex-col items-center gap-8 mb-10"
       >
