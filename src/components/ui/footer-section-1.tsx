@@ -112,16 +112,16 @@ export default function Footer1() {
         {/* Social Media: Hanya Instagram */}
         <motion.div variants={itemVariants} className="flex justify-center">
           <motion.a
-            href="https://instagram.com"
+            href="https://www.instagram.com/administrasirs25/"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 rounded-full border border-neutral-200 bg-neutral-50/80 hover:bg-white shadow-xs hover:shadow-md hover:border-pink-300 hover:text-pink-600 transition-all text-neutral-700 text-sm font-medium group cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            aria-label="Instagram Class ARS UNIBANG"
+            aria-label="Instagram Class ARS UNIBANG (@administrasirs25)"
           >
             <InstagramIcon className="w-4 h-4 text-pink-600 group-hover:scale-110 transition-transform" />
-            <span>Instagram</span>
+            <span>@administrasirs25</span>
           </motion.a>
         </motion.div>
       </motion.div>

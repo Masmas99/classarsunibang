@@ -25,6 +25,7 @@ Proyek ini dibangun menggunakan framework Next.js 16 dengan arsitektur App Route
 Class ARS UNIBANG adalah platform digital yang mendokumentasikan profil kelas, direktori mahasiswa aktif, galeri dokumentasi kegiatan, serta portal administrasi terproteksi untuk pembaruan data secara langsung (real-time).
 
 Domain Produksi: https://classarsunibang.vercel.app/
+Instagram Resmi: https://www.instagram.com/administrasirs25/
 
 ---
 
