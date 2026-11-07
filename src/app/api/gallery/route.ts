@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import prisma from '@/lib/prisma';
 import { getAdminSession } from '@/lib/auth';
+import { optimizeToWebP } from '@/lib/image-utils';
 
 // Public GET: List all gallery photos
 export async function GET() {
@@ -43,9 +44,15 @@ export async function POST(request: Request) {
       );
     }
 
+    const optimizedSrc = await optimizeToWebP(
+      src || '/images/gallery/hero-ars-1.webp',
+      1200,
+      80
+    );
+
     const newItem = await prisma.gallery.create({
       data: {
-        src,
+        src: optimizedSrc,
         alt: alt || title,
         title: title.trim(),
         order: 0,

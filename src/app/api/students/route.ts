@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import prisma from '@/lib/prisma';
 import { getAdminSession } from '@/lib/auth';
+import { optimizeToWebP } from '@/lib/image-utils';
 
 // Public GET: List all students sorted A-Z (case-insensitive)
 export async function GET() {
@@ -47,11 +48,17 @@ export async function POST(request: Request) {
       );
     }
 
+    const optimizedImage = await optimizeToWebP(
+      image || '/images/students/student-1.webp',
+      800,
+      80
+    );
+
     const newStudent = await prisma.student.create({
       data: {
         name: name.trim(),
         role: role.trim(),
-        image: image || '/images/students/student-1.jpg',
+        image: optimizedImage,
         order: 0,
       },
     });

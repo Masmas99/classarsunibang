@@ -64,7 +64,7 @@ export default function AdminLoginPage() {
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-50 border border-slate-100 mb-4 shadow-sm">
             <Image
-              src="/images/logo-ars.png"
+              src="/images/logo-ars.webp"
               alt="Logo Class ARS UNIBANG"
               width={48}
               height={48}

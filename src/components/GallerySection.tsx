@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, type Variants } from "motion/react";
 
 export interface GalleryItem {
   id: number;
@@ -11,22 +11,46 @@ export interface GalleryItem {
   title: string;
 }
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 260,
+      damping: 20,
+    },
+  },
+};
+
 const COLUMN_1: GalleryItem[] = [
   {
     id: 1,
-    src: "/images/ars/ars-4.jpg",
+    src: "/images/ars/ars-4.webp",
     alt: "Himpunan Mahasiswa ARS",
     title: "Kebersamaan Himpunan ARS UNIBANG",
   },
   {
     id: 2,
-    src: "/images/ars/ars-1.jpg",
+    src: "/images/ars/ars-1.webp",
     alt: "Kegiatan Kampus",
     title: "Aktivitas Perkuliahan di Kampus",
   },
   {
     id: 3,
-    src: "/images/ars/ars-3.jpg",
+    src: "/images/ars/ars-3.webp",
     alt: "Diskusi Mahasiswa",
     title: "Diskusi & Interaksi Mahasiswa",
   },
@@ -35,19 +59,19 @@ const COLUMN_1: GalleryItem[] = [
 const COLUMN_2: GalleryItem[] = [
   {
     id: 4,
-    src: "/images/ars/ars-2.jpg",
+    src: "/images/ars/ars-2.webp",
     alt: "Foto Angkatan Bersama",
     title: "Potret Seluruh Angkatan Class ARS",
   },
   {
     id: 5,
-    src: "/images/ars/ars-5.jpg",
+    src: "/images/ars/ars-5.webp",
     alt: "Formasi Gedung Fakultas",
     title: "Formasi di Depan Gedung Perkuliahan",
   },
   {
     id: 6,
-    src: "/images/ars/ars-1.jpg",
+    src: "/images/ars/ars-1.webp",
     alt: "Momen Lapangan",
     title: "Dokumentasi Kegiatan Luar Ruangan",
   },
@@ -56,19 +80,19 @@ const COLUMN_2: GalleryItem[] = [
 const COLUMN_3: GalleryItem[] = [
   {
     id: 7,
-    src: "/images/ars/ars-5.jpg",
+    src: "/images/ars/ars-5.webp",
     alt: "Dokumentasi Utama",
     title: "Momen Kebersamaan Akbar Angkatan",
   },
   {
     id: 8,
-    src: "/images/ars/ars-3.jpg",
+    src: "/images/ars/ars-3.webp",
     alt: "Kebersamaan Lapangan",
     title: "Aktivitas Luar Ruangan & Pengakraban",
   },
   {
     id: 9,
-    src: "/images/ars/ars-2.jpg",
+    src: "/images/ars/ars-2.webp",
     alt: "Potret Angkatan",
     title: "Potret Angkatan Mahasiswa ARS",
   },
@@ -77,19 +101,19 @@ const COLUMN_3: GalleryItem[] = [
 const COLUMN_4: GalleryItem[] = [
   {
     id: 10,
-    src: "/images/ars/ars-2.jpg",
+    src: "/images/ars/ars-2.webp",
     alt: "Sesi Akademik",
     title: "Sesi Pembelajaran Interaktif",
   },
   {
     id: 11,
-    src: "/images/ars/ars-4.jpg",
+    src: "/images/ars/ars-4.webp",
     alt: "Formasi Gedung",
     title: "Dokumentasi Kampus UNIBANG",
   },
   {
     id: 12,
-    src: "/images/ars/ars-1.jpg",
+    src: "/images/ars/ars-1.webp",
     alt: "Kenangan Angkatan",
     title: "Kenangan Berharga Class ARS UNIBANG",
   },
@@ -177,11 +201,12 @@ export default function GallerySection({ initialPhotos }: GallerySectionProps) {
     };
   }, [selectedIndex, photos.length]);
 
-  const renderPhotoCard = (item: GalleryItem) => {
+  const renderPhotoCard = (item: GalleryItem, prefix = "card") => {
     const photoIndex = photos.findIndex((p) => p.id === item.id);
     return (
-      <div
-        key={item.id}
+      <motion.div
+        variants={itemVariants}
+        key={`${prefix}-${item.id}`}
         onClick={() => setSelectedIndex(photoIndex)}
         role="button"
         tabIndex={0}
@@ -198,7 +223,7 @@ export default function GallerySection({ initialPhotos }: GallerySectionProps) {
           alt={item.alt}
           onError={(e) => {
             if (!item.src?.startsWith("data:")) {
-              e.currentTarget.src = "/images/ars/ars-1.jpg";
+              e.currentTarget.src = "/images/ars/ars-1.webp";
             }
           }}
           className="w-full h-auto block group-hover:scale-105 transition-transform duration-500 ease-out select-none"
@@ -208,29 +233,35 @@ export default function GallerySection({ initialPhotos }: GallerySectionProps) {
             {item.title}
           </div>
         </div>
-      </div>
+      </motion.div>
     );
   };
 
-  const col1 = photos.filter((_, i) => i % 4 === 0);
-  const col2 = photos.filter((_, i) => i % 4 === 1);
-  const col3 = photos.filter((_, i) => i % 4 === 2);
-  const col4 = photos.filter((_, i) => i % 4 === 3);
+  // Split photos into columns for responsive masonry layout
+  // On mobile (< md): 2 continuous columns to prevent empty gaps between rows
+  const mobileCol1 = photos.filter((_, i) => i % 2 === 0);
+  const mobileCol2 = photos.filter((_, i) => i % 2 === 1);
+
+  // On desktop (>= md): 4 continuous columns
+  const desktopCol1 = photos.filter((_, i) => i % 4 === 0);
+  const desktopCol2 = photos.filter((_, i) => i % 4 === 1);
+  const desktopCol3 = photos.filter((_, i) => i % 4 === 2);
+  const desktopCol4 = photos.filter((_, i) => i % 4 === 3);
 
   return (
     <section id="gallery" className="w-full py-12 sm:py-20 scroll-mt-24 border-t border-[#f0f0f0]">
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial="hidden"
+        whileInView="visible"
         viewport={{ once: true, amount: 0.08 }}
-        transition={{ type: "spring", stiffness: 220, damping: 24 }}
+        variants={containerVariants}
         className="w-full max-w-[1138px] mx-auto px-4 sm:px-8"
       >
         {/* Header Bar: Icon Gallery + CLASS ARS UNIBANG / GALLERY */}
-        <div className="flex items-center gap-3.5 mb-6">
+        <motion.div variants={itemVariants} className="flex items-center gap-3.5 mb-6">
           <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-neutral-200/80 bg-white flex items-center justify-center p-2">
             <img
-              src="/images/logo-gallery.png"
+              src="/images/logo-gallery.webp"
               alt="Icon Gallery Class ARS UNIBANG"
               className="w-full h-full object-contain"
             />
@@ -244,33 +275,37 @@ export default function GallerySection({ initialPhotos }: GallerySectionProps) {
               GALLERY
             </span>
           </h2>
-        </div>
+        </motion.div>
 
         {/* Description */}
-        <p className="text-[#555] text-sm sm:text-[14.5px] leading-relaxed mb-8">
+        <motion.p variants={itemVariants} className="text-[#555] text-sm sm:text-[14.5px] leading-relaxed mb-8">
           Dokumentasi momen kebersamaan, kegiatan akademik, dan aktivitas mahasiswa Class Administrasi Rumah Sakit UNIBANG.
-        </p>
+        </motion.p>
 
-        {/* ── Masonry Mosaic Collage Grid (4 Kolom Sesuai Referensi Gambar) ── */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5">
-          {/* Kolom 1 */}
+        {/* ── Masonry Mosaic Collage Grid (Responsif Kontinu Tanpa Gap Kosong) ── */}
+        {/* Tampilan Mobile (< md): 2 Kolom Kontinu Murni */}
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 md:hidden">
           <div className="flex flex-col gap-2.5 sm:gap-3.5">
-            {col1.map(renderPhotoCard)}
+            {mobileCol1.map((item) => renderPhotoCard(item, "mob-col1"))}
           </div>
-
-          {/* Kolom 2 */}
           <div className="flex flex-col gap-2.5 sm:gap-3.5">
-            {col2.map(renderPhotoCard)}
+            {mobileCol2.map((item) => renderPhotoCard(item, "mob-col2"))}
           </div>
+        </div>
 
-          {/* Kolom 3 */}
-          <div className="flex flex-col gap-2.5 sm:gap-3.5">
-            {col3.map(renderPhotoCard)}
+        {/* Tampilan Desktop (>= md): 4 Kolom Kontinu */}
+        <div className="hidden md:grid md:grid-cols-4 gap-3.5">
+          <div className="flex flex-col gap-3.5">
+            {desktopCol1.map((item) => renderPhotoCard(item, "desk-col1"))}
           </div>
-
-          {/* Kolom 4 */}
-          <div className="flex flex-col gap-2.5 sm:gap-3.5">
-            {col4.map(renderPhotoCard)}
+          <div className="flex flex-col gap-3.5">
+            {desktopCol2.map((item) => renderPhotoCard(item, "desk-col2"))}
+          </div>
+          <div className="flex flex-col gap-3.5">
+            {desktopCol3.map((item) => renderPhotoCard(item, "desk-col3"))}
+          </div>
+          <div className="flex flex-col gap-3.5">
+            {desktopCol4.map((item) => renderPhotoCard(item, "desk-col4"))}
           </div>
         </div>
       </motion.div>
@@ -325,7 +360,7 @@ export default function GallerySection({ initialPhotos }: GallerySectionProps) {
                 alt={selectedPhoto.alt}
                 onError={(e) => {
                   if (!selectedPhoto.src?.startsWith("data:")) {
-                    e.currentTarget.src = "/images/ars/ars-1.jpg";
+                    e.currentTarget.src = "/images/ars/ars-1.webp";
                   }
                 }}
                 className="max-w-[94vw] max-h-[76vh] sm:max-h-[80vh] w-auto h-auto object-contain rounded-2xl sm:rounded-3xl block select-none animate-in fade-in duration-200"

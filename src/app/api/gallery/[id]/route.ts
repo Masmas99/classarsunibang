@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import prisma from '@/lib/prisma';
 import { getAdminSession } from '@/lib/auth';
+import { optimizeToWebP } from '@/lib/image-utils';
 
 // Protected PUT: Update gallery photo
 export async function PUT(
@@ -23,10 +24,12 @@ export async function PUT(
     const body = await request.json();
     const { src, alt, title, order } = body;
 
+    const optimizedSrc = src !== undefined ? await optimizeToWebP(src, 1200, 80) : undefined;
+
     const updatedItem = await prisma.gallery.update({
       where: { id: galleryId },
       data: {
-        ...(src !== undefined && { src }),
+        ...(optimizedSrc !== undefined && { src: optimizedSrc }),
         ...(alt !== undefined && { alt }),
         ...(title !== undefined && { title: title.trim() }),
         ...(order !== undefined && { order: Number(order) }),

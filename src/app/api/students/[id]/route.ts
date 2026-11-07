@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import prisma from '@/lib/prisma';
 import { getAdminSession } from '@/lib/auth';
+import { optimizeToWebP } from '@/lib/image-utils';
 
 // Protected PUT: Update student
 export async function PUT(
@@ -23,12 +24,14 @@ export async function PUT(
     const body = await request.json();
     const { name, role, image, order } = body;
 
+    const optimizedImage = image !== undefined ? await optimizeToWebP(image, 800, 80) : undefined;
+
     const updatedStudent = await prisma.student.update({
       where: { id: studentId },
       data: {
         ...(name !== undefined && { name: name.trim() }),
         ...(role !== undefined && { role: role.trim() }),
-        ...(image !== undefined && { image }),
+        ...(optimizedImage !== undefined && { image: optimizedImage }),
         ...(order !== undefined && { order: Number(order) }),
       },
     });

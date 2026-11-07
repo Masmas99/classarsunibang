@@ -40,7 +40,7 @@ export default function AboutSection() {
         <motion.div variants={itemVariants} className="flex items-center gap-3.5 mb-8">
           <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-neutral-200/80 bg-white flex items-center justify-center p-0.5">
             <img
-              src="/images/logo-ars.png"
+              src="/images/logo-ars.webp"
               alt="Logo Class ARS UNIBANG"
               className="w-full h-full object-contain"
             />
@@ -79,7 +79,7 @@ export default function AboutSection() {
             {/* Foto 1: Gedung Kampus & Mahasiswa */}
             <div className="relative overflow-hidden rounded-2xl border border-[#e9e9e9] bg-[#f9f9f9] shadow-sm aspect-[4/3] group">
               <img
-                src="/images/ars/ars-1.jpg"
+                src="/images/ars/ars-1.webp"
                 alt="Gedung Kampus UNIBANG"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -88,7 +88,7 @@ export default function AboutSection() {
             {/* Foto 2: Mahasiswa dengan Banner */}
             <div className="relative overflow-hidden rounded-2xl border border-[#e9e9e9] bg-[#f9f9f9] shadow-sm aspect-[4/3] group">
               <img
-                src="/images/ars/ars-4.jpg"
+                src="/images/ars/ars-4.webp"
                 alt="Dokumentasi Class ARS UNIBANG"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />

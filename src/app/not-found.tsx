@@ -28,7 +28,7 @@ export default function NotFound() {
         <div className="mb-6 flex items-center justify-center">
           <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 shadow-md p-2 flex items-center justify-center">
             <img
-              src="/images/logo-ars.png"
+              src="/images/logo-ars.webp"
               alt="Logo Class ARS UNIBANG"
               className="w-full h-full object-contain"
             />

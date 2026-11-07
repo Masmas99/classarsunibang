@@ -76,7 +76,7 @@ export default function Footer1() {
         <motion.div variants={itemVariants} className="flex flex-col items-center gap-2.5">
           <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-xs border border-neutral-200/90 bg-white flex items-center justify-center p-1">
             <img
-              src="/images/logo-ars.png"
+              src="/images/logo-ars.webp"
               alt="Logo Class ARS UNIBANG"
               className="w-full h-full object-contain"
             />

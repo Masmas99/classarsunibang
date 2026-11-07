@@ -170,8 +170,8 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // Helper: Image file compressor to optimized Data URI
-  const compressImage = (file: File): Promise<string> => {
+  // Helper: Image file compressor to optimized WebP Data URI
+  const compressImage = (file: File, maxWidth = 1000): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -180,19 +180,19 @@ export default function AdminDashboardPage() {
         img.src = event.target?.result as string;
         img.onload = () => {
           const canvas = document.createElement("canvas");
-          const MAX_WIDTH = 800;
-          const MAX_HEIGHT = 800;
+          const MAX_WIDTH = maxWidth;
+          const MAX_HEIGHT = maxWidth;
           let width = img.width;
           let height = img.height;
 
           if (width > height) {
             if (width > MAX_WIDTH) {
-              height *= MAX_WIDTH / width;
+              height = Math.round(height * (MAX_WIDTH / width));
               width = MAX_WIDTH;
             }
           } else {
             if (height > MAX_HEIGHT) {
-              width *= MAX_HEIGHT / height;
+              width = Math.round(width * (MAX_HEIGHT / height));
               height = MAX_HEIGHT;
             }
           }
@@ -205,7 +205,12 @@ export default function AdminDashboardPage() {
             return;
           }
           ctx.drawImage(img, 0, 0, width, height);
-          const compressed = canvas.toDataURL("image/jpeg", 0.82);
+
+          // Convert to WebP format automatically
+          let compressed = canvas.toDataURL("image/webp", 0.80);
+          if (!compressed.startsWith("data:image/webp")) {
+            compressed = canvas.toDataURL("image/jpeg", 0.80);
+          }
           resolve(compressed);
         };
         img.onerror = (err) => reject(err);
@@ -220,7 +225,7 @@ export default function AdminDashboardPage() {
     if (!file) return;
 
     try {
-      const compressed = await compressImage(file);
+      const compressed = await compressImage(file, 800);
       setStudentForm((prev) => ({ ...prev, image: compressed }));
     } catch {
       showToast("error", "Gagal membaca file foto");
@@ -233,7 +238,7 @@ export default function AdminDashboardPage() {
     if (!file) return;
 
     try {
-      const compressed = await compressImage(file);
+      const compressed = await compressImage(file, 1200);
       setGalleryForm((prev) => ({ ...prev, src: compressed }));
     } catch {
       showToast("error", "Gagal membaca file foto");
@@ -259,7 +264,7 @@ export default function AdminDashboardPage() {
       setStudentForm({
         name: "",
         role: "",
-        image: "/images/students/student-1.jpg",
+        image: "/images/students/student-1.webp",
         order: students.length + 1,
       });
       setStudentImageMode("upload");
@@ -325,7 +330,7 @@ export default function AdminDashboardPage() {
       setGalleryForm({
         title: "",
         alt: "",
-        src: "/images/gallery/hero-ars-1.jpg",
+        src: "/images/gallery/hero-ars-1.webp",
         order: gallery.length + 1,
       });
       setGalleryImageMode("upload");
@@ -455,7 +460,7 @@ export default function AdminDashboardPage() {
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden">
             <Image
-              src="/images/logo-ars.png"
+              src="/images/logo-ars.webp"
               alt="Logo ARS"
               width={24}
               height={24}
@@ -493,7 +498,7 @@ export default function AdminDashboardPage() {
             <Link href="/" className="flex items-center gap-3 group">
               <div className="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden flex-shrink-0">
                 <Image
-                  src="/images/logo-ars.png"
+                  src="/images/logo-ars.webp"
                   alt="Logo ARS UNIBANG"
                   width={28}
                   height={28}
@@ -719,7 +724,7 @@ export default function AdminDashboardPage() {
                         <td className="py-3.5 px-6">
                           <div className="w-12 h-14 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 relative shadow-sm">
                             <Image
-                              src={student.image || "/images/students/student-1.jpg"}
+                              src={student.image || "/images/students/student-1.webp"}
                               alt={student.name}
                               fill
                               unoptimized

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Search, X } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, type Variants } from "motion/react";
 
 export interface Student {
   id: number;
@@ -11,12 +11,36 @@ export interface Student {
   image: string;
 }
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 260,
+      damping: 20,
+    },
+  },
+};
+
 const STUDENTS: Student[] = [
   {
     id: 2,
     name: "Ahmad Fauzi",
     role: "Wakil Ketua Kelas",
-    image: "/images/students/student-1.jpg",
+    image: "/images/students/student-1.webp",
   },
   {
     id: 6,
@@ -28,7 +52,7 @@ const STUDENTS: Student[] = [
     id: 5,
     name: "Dewi Lestari",
     role: "Bendahara 1",
-    image: "/images/students/student-1.jpg",
+    image: "/images/students/student-1.webp",
   },
   {
     id: 8,
@@ -40,13 +64,13 @@ const STUDENTS: Student[] = [
     id: 1,
     name: "Nurul Hidayah",
     role: "Ketua Kelas",
-    image: "/images/students/student-1.jpg",
+    image: "/images/students/student-1.webp",
   },
   {
     id: 7,
     name: "Putri Anggraini",
     role: "Divisi Acara",
-    image: "/images/students/student-1.jpg",
+    image: "/images/students/student-1.webp",
   },
   {
     id: 4,
@@ -58,7 +82,7 @@ const STUDENTS: Student[] = [
     id: 3,
     name: "Siti Rahma",
     role: "Sekretaris 1",
-    image: "/images/students/student-1.jpg",
+    image: "/images/students/student-1.webp",
   },
 ];
 
@@ -127,18 +151,18 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
   return (
     <section id="students" className="w-full py-12 sm:py-20 scroll-mt-24 border-t border-[#f0f0f0]">
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.12 }}
-        transition={{ type: "spring", stiffness: 220, damping: 24 }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.08 }}
+        variants={containerVariants}
         className="w-full max-w-[1138px] mx-auto px-4 sm:px-8"
       >
         {/* Header Bar: Logo + CLASS ARS UNIBANG / STUDENTS */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div className="flex items-center gap-3.5">
             <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-neutral-200/80 bg-white flex items-center justify-center p-1.5">
               <img
-                src="/images/logo-students.png"
+                src="/images/logo-students.webp"
                 alt="Logo Students Class ARS UNIBANG"
                 className="w-full h-full object-contain"
               />
@@ -165,18 +189,19 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
               className="w-full pl-9 pr-4 py-2 text-sm bg-neutral-50 border border-neutral-200 rounded-full focus:outline-none focus:border-neutral-400 focus:bg-white transition-all placeholder:text-neutral-400"
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Description */}
-        <p className="text-[#555] text-sm sm:text-[14.5px] leading-relaxed mb-8">
+        <motion.p variants={itemVariants} className="text-[#555] text-sm sm:text-[14.5px] leading-relaxed mb-8">
           Daftar mahasiswa aktif Class Administrasi Rumah Sakit (ARS) UNIBANG angkatan 2025. Klik kartu untuk melihat foto dan info mahasiswa.
-        </p>
+        </motion.p>
 
         {/* Cards Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {filteredStudents.length > 0 ? (
             filteredStudents.map((student) => (
-              <div
+              <motion.div
+                variants={itemVariants}
                 key={student.id}
                 onClick={() => setSelectedStudent(student)}
                 role="button"
@@ -197,7 +222,7 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
                     className="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
                       if (!student.image?.startsWith("data:")) {
-                        e.currentTarget.src = "/images/students/student-1.jpg";
+                        e.currentTarget.src = "/images/students/student-1.webp";
                       }
                     }}
                   />
@@ -214,7 +239,7 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
                     </p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))
           ) : (
             <div className="col-span-full py-12 text-center text-neutral-400 text-sm">
@@ -253,7 +278,7 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
                 className="w-full h-full object-cover block"
                 onError={(e) => {
                   if (!selectedStudent.image?.startsWith("data:")) {
-                    e.currentTarget.src = "/images/students/student-1.jpg";
+                    e.currentTarget.src = "/images/students/student-1.webp";
                   }
                 }}
               />
