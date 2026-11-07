@@ -49,8 +49,8 @@ export default function Footer1() {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Students", href: "/#students" },
-    { name: "Gallery", href: "/#gallery" },
+    { name: "Students", href: "/students" },
+    { name: "Gallery", href: "/gallery" },
   ];
 
   const handleNavClick = (e: React.MouseEvent, href: string) => {

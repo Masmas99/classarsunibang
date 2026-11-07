@@ -23,8 +23,8 @@ export default function Header() {
 
   const navigationItems = [
     { name: "Home", href: "/" },
-    { name: "Students", href: "/#students" },
-    { name: "Gallery", href: "/#gallery" },
+    { name: "Students", href: "/students" },
+    { name: "Gallery", href: "/gallery" },
   ];
 
   const handleNavClick = (e, item) => {
