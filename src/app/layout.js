@@ -19,14 +19,16 @@ export const metadata = {
     template: "%s | Class ARS UNIBANG",
   },
   description:
-    "Website Resmi Class Administrasi Rumah Sakit (ARS) UNIBANG - Fakultas Ilmu Kesehatan dan Sains, Universitas Bina Bangsa.",
+    "Website Resmi Class Administrasi Rumah Sakit (ARS) UNIBANG - Fakultas Ilmu Kesehatan dan Sains, Universitas Bhakti Asih Tangerang.",
   keywords: [
     "Class ARS UNIBANG",
     "Administrasi Rumah Sakit",
     "UNIBANG",
-    "Universitas Bina Bangsa",
+    "Universitas Bhakti Asih",
+    "Universitas Bhakti Asih Tangerang",
     "Mahasiswa ARS",
     "Fakultas Ilmu Kesehatan dan Sains",
+    "S.Ars",
   ],
   authors: [{ name: "Class ARS UNIBANG" }],
   creator: "Class ARS UNIBANG",
@@ -50,7 +52,7 @@ export const metadata = {
     siteName: "Class ARS UNIBANG",
     title: "Class ARS UNIBANG — Administrasi Rumah Sakit",
     description:
-      "Website Resmi Class Administrasi Rumah Sakit (ARS) UNIBANG - Fakultas Ilmu Kesehatan dan Sains, Universitas Bina Bangsa.",
+      "Website Resmi Class Administrasi Rumah Sakit (ARS) UNIBANG - Fakultas Ilmu Kesehatan dan Sains, Universitas Bhakti Asih Tangerang.",
     images: [
       {
         url: "/og-image.png",

@@ -1,5 +1,6 @@
 "use client";
 
+import { ExternalLink } from "lucide-react";
 import { motion, type Variants } from "motion/react";
 
 const containerVariants = {
@@ -58,17 +59,46 @@ export default function AboutSection() {
 
         {/* Content: Left Text (65%) & Right 2 Thumbnails (35%) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-          {/* Sisi Kiri: 2 Paragraf Penjelasan */}
+          {/* Sisi Kiri: 2 Paragraf Penjelasan & Identitas Resmi */}
           <motion.div
             variants={itemVariants}
             className="lg:col-span-7 flex flex-col gap-4 text-[#555] text-sm sm:text-[14.5px] leading-relaxed text-left"
           >
             <p>
-              Class ARS UNIBANG adalah kelas mahasiswa modern yang menggabungkan keunggulan di bidang teknologi, administrasi kesehatan, dan sistem manajemen rumah sakit untuk menciptakan lulusan yang siap bersaing di panggung masa depan. Dengan kurikulum berbasis kompetensi dan fasilitas terkini, Class ARS UNIBANG membekali mahasiswa dengan keterampilan digital, analisis manajerial, dan kepemimpinan yang dibutuhkan di era transformasi industri kesehatan.
+              Class ARS UNIBANG adalah kelas mahasiswa Program Studi S1 Administrasi Rumah Sakit, Fakultas Ilmu Kesehatan dan Sains, <strong className="font-semibold text-neutral-800">Universitas Bhakti Asih Tangerang (UNIBANG)</strong> angkatan 2025. Terakreditasi <strong className="font-semibold text-neutral-800">Unggul</strong>, program studi ini berkomitmen menghasilkan lulusan administrasi rumah sakit berbasis digital yang profesional, berakhlak mulia, adaptif, serta mampu berpikir kritis dan inovatif dalam memimpin dinamika pelayanan kesehatan modern.
             </p>
             <p>
-              Tak hanya fokus pada keilmuan akademik, kelas ini juga menanamkan nilai-nilai integritas, solidaritas kekeluargaan, dan dedikasi sosial agar setiap mahasiswa mampu berkontribusi positif bagi kemajuan almamater dan pelayanan kesehatan masyarakat. Bergabunglah bersama Class ARS UNIBANG dan jadilah bagian dari generasi unggul yang kompeten, berkarakter, dan berdaya saing global!
+              Pendidikan diselenggarakan secara aplikatif berbasis IPTEKS guna membekali calon Sarjana Administrasi Rumah Sakit (<span className="font-semibold text-neutral-800">S.Ars</span>) dengan keterampilan manajerial rumah sakit, tata kelola informasi digital, serta kepemimpinan transformatif. Tak hanya unggul secara akademis, mahasiswa Class ARS UNIBANG senantiasa mengedepankan solidaritas kekeluargaan, integritas, dan pengabdian sosial demi kemajuan almamater dan masyarakat luas.
             </p>
+
+            {/* Badges Ringkasan Identitas Prodi */}
+            <div className="flex flex-wrap items-center gap-2 pt-2">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 border border-neutral-200">
+                Universitas Bhakti Asih Tangerang
+              </span>
+              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 border border-neutral-200">
+                Jenjang S1 &bull; Gelar S.Ars
+              </span>
+              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 border border-neutral-200">
+                Akreditasi Unggul
+              </span>
+              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 border border-neutral-200">
+                Berbasis Digital & IPTEKS
+              </span>
+            </div>
+
+            {/* Link Resmi Program Studi */}
+            <div className="pt-1">
+              <a
+                href="https://www.universitasbhaktiasih.ac.id/s1-administrasi-rs/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-neutral-800 hover:text-blue-600 transition-colors group"
+              >
+                <span>Pelajari Program Studi S1 Administrasi RS di Website Resmi UNIBANG</span>
+                <ExternalLink className="w-3.5 h-3.5 text-neutral-400 group-hover:text-blue-600 transition-colors" />
+              </a>
+            </div>
           </motion.div>
 
           {/* Sisi Kanan: 2 Foto Bersebelahan */}

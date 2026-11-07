@@ -4,11 +4,11 @@ import prisma from "@/lib/prisma";
 export const metadata = {
   title: "Daftar Mahasiswa",
   description:
-    "Daftar direktori mahasiswa aktif Class Administrasi Rumah Sakit (ARS) UNIBANG angkatan 2025 - Fakultas Ilmu Kesehatan dan Sains, Universitas Bina Bangsa.",
+    "Daftar direktori mahasiswa aktif Class Administrasi Rumah Sakit (ARS) UNIBANG angkatan 2025 - Fakultas Ilmu Kesehatan dan Sains, Universitas Bhakti Asih Tangerang.",
   openGraph: {
     title: "Daftar Mahasiswa — Class ARS UNIBANG",
     description:
-      "Daftar direktori mahasiswa aktif Class Administrasi Rumah Sakit (ARS) UNIBANG angkatan 2025.",
+      "Daftar direktori mahasiswa aktif Class Administrasi Rumah Sakit (ARS) UNIBANG angkatan 2025 - Universitas Bhakti Asih Tangerang.",
     url: "https://classarsunibang.vercel.app/students",
     images: ["/og-image.png"],
   },

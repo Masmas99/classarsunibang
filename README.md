@@ -1,6 +1,6 @@
 # Class ARS UNIBANG
 
-Website Resmi Mahasiswa Class Administrasi Rumah Sakit (ARS), Fakultas Ilmu Kesehatan dan Sains, Universitas Bina Bangsa (UNIBANG) Angkatan 2025.
+Website Resmi Mahasiswa Class Administrasi Rumah Sakit (ARS), Fakultas Ilmu Kesehatan dan Sains, Universitas Bhakti Asih Tangerang (UNIBANG) Angkatan 2025.
 
 Proyek ini dibangun menggunakan framework Next.js 16 dengan arsitektur App Router, basis data PostgreSQL melalui Prisma ORM, pemrosesan aset otomatis WebP via Sharp, dan animasi antarmuka terpadu berbasis Motion.
 
@@ -24,7 +24,13 @@ Proyek ini dibangun menggunakan framework Next.js 16 dengan arsitektur App Route
 
 Class ARS UNIBANG adalah platform digital yang mendokumentasikan profil kelas, direktori mahasiswa aktif, galeri dokumentasi kegiatan, serta portal administrasi terproteksi untuk pembaruan data secara langsung (real-time).
 
+Perguruan Tinggi: Universitas Bhakti Asih Tangerang (UNIBANG)
+Fakultas: Fakultas Ilmu Kesehatan dan Sains
+Program Studi: S1 Administrasi Rumah Sakit (Gelar: S.Ars)
+Akreditasi: Unggul
 Domain Produksi: https://classarsunibang.vercel.app/
+Website Kampus: https://www.universitasbhaktiasih.ac.id/
+Website Program Studi S1 ARS: https://www.universitasbhaktiasih.ac.id/s1-administrasi-rs/
 Instagram Resmi: https://www.instagram.com/administrasirs25/
 
 ---
@@ -239,4 +245,4 @@ Proyek ini telah dikonfigurasi agar dapat langsung dideploy ke platform Vercel:
 
 ## Hak Cipta dan Lisensi
 
-Hak Cipta (c) 2025 Class ARS UNIBANG - Fakultas Ilmu Kesehatan dan Sains, Universitas Bina Bangsa. Seluruh hak cipta dilindungi undang-undang.
+Hak Cipta (c) 2025 Class ARS UNIBANG - Fakultas Ilmu Kesehatan dan Sains, Universitas Bhakti Asih Tangerang. Seluruh hak cipta dilindungi undang-undang.

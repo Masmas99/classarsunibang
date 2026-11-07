@@ -165,7 +165,7 @@ async function main() {
       </text>
 
       <text x="0" y="200" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" font-weight="400" fill="#64748b">
-        Website Resmi Mahasiswa Angkatan 2025 • Universitas Bina Bangsa
+        Website Resmi Mahasiswa Angkatan 2025 • Universitas Bhakti Asih Tangerang
       </text>
 
       <!-- Divider line -->
