@@ -37,20 +37,20 @@ export default function AboutSection() {
         className="w-full max-w-[1138px] mx-auto px-4 sm:px-8"
       >
         {/* Header Bar: Logo + CLASS ARS UNIBANG / PROFIL */}
-        <motion.div variants={itemVariants} className="flex items-center gap-3.5 mb-8">
-          <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-neutral-200/80 bg-white flex items-center justify-center p-0.5">
+        <motion.div variants={itemVariants} className="flex items-center gap-2.5 sm:gap-3.5 mb-6 sm:mb-8">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-neutral-200/80 bg-white flex items-center justify-center p-0.5">
             <img
               src="/images/logo-ars.webp"
               alt="Logo Class ARS UNIBANG"
               className="w-full h-full object-contain"
             />
           </div>
-          <h2 className="text-lg sm:text-xl font-bold tracking-tight flex items-center">
-            <span className="font-extrabold uppercase text-[#111] tracking-wide">
+          <h2 className="text-sm sm:text-lg md:text-xl font-bold tracking-tight flex items-center whitespace-nowrap">
+            <span className="font-extrabold uppercase text-[#111] tracking-normal sm:tracking-wide">
               CLASS ARS UNIBANG
             </span>
-            <span className="text-[#888] font-light mx-2">/</span>
-            <span className="text-[#666] font-normal uppercase tracking-wider text-sm sm:text-base">
+            <span className="text-[#888] font-light mx-1.5 sm:mx-2">/</span>
+            <span className="text-[#666] font-normal uppercase tracking-wider text-xs sm:text-sm md:text-base">
               PROFIL
             </span>
           </h2>
@@ -61,7 +61,7 @@ export default function AboutSection() {
           {/* Sisi Kiri: 2 Paragraf Penjelasan */}
           <motion.div
             variants={itemVariants}
-            className="lg:col-span-7 flex flex-col gap-4 text-[#555] text-sm sm:text-[14.5px] leading-relaxed text-justify sm:text-left"
+            className="lg:col-span-7 flex flex-col gap-4 text-[#555] text-sm sm:text-[14.5px] leading-relaxed text-left"
           >
             <p>
               Class ARS UNIBANG adalah kelas mahasiswa modern yang menggabungkan keunggulan di bidang teknologi, administrasi kesehatan, dan sistem manajemen rumah sakit untuk menciptakan lulusan yang siap bersaing di panggung masa depan. Dengan kurikulum berbasis kompetensi dan fasilitas terkini, Class ARS UNIBANG membekali mahasiswa dengan keterampilan digital, analisis manajerial, dan kepemimpinan yang dibutuhkan di era transformasi industri kesehatan.

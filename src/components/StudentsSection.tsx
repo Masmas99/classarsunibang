@@ -159,20 +159,20 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
       >
         {/* Header Bar: Logo + CLASS ARS UNIBANG / STUDENTS */}
         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-neutral-200/80 bg-white flex items-center justify-center p-1.5">
+          <div className="flex items-center gap-2.5 sm:gap-3.5">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-neutral-200/80 bg-white flex items-center justify-center p-1.5">
               <img
                 src="/images/logo-students.webp"
                 alt="Logo Students Class ARS UNIBANG"
                 className="w-full h-full object-contain"
               />
             </div>
-            <h2 className="text-lg sm:text-xl font-bold tracking-tight flex items-center">
-              <span className="font-extrabold uppercase text-[#111] tracking-wide">
+            <h2 className="text-sm sm:text-lg md:text-xl font-bold tracking-tight flex items-center whitespace-nowrap">
+              <span className="font-extrabold uppercase text-[#111] tracking-normal sm:tracking-wide">
                 CLASS ARS UNIBANG
               </span>
-              <span className="text-[#888] font-light mx-2">/</span>
-              <span className="text-[#666] font-normal uppercase tracking-wider text-sm sm:text-base">
+              <span className="text-[#888] font-light mx-1.5 sm:mx-2">/</span>
+              <span className="text-[#666] font-normal uppercase tracking-wider text-xs sm:text-sm md:text-base">
                 STUDENTS
               </span>
             </h2>
