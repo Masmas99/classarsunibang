@@ -23,9 +23,21 @@ export default function Header() {
 
   const navigationItems = [
     { name: "Home", href: "/" },
-    { name: "Students", href: "/students" },
-    { name: "Gallery", href: "/gallery" },
+    { name: "Students", href: "/#students" },
+    { name: "Gallery", href: "/#gallery" },
   ];
+
+  const handleNavClick = (e, item) => {
+    if (item.href === "/" || item.name === "Home") {
+      if (pathname === "/") {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (window.location.hash) {
+          window.history.pushState(null, "", "/");
+        }
+      }
+    }
+  };
 
   return (
     <header
@@ -41,11 +53,19 @@ export default function Header() {
           aria-label="Main navigation"
         >
           {navigationItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname === item.href ||
+                  (item.name === "Students" && pathname === "/students") ||
+                  (item.name === "Gallery" && pathname === "/gallery");
+
             return (
               <Link
                 key={item.name}
                 href={item.href}
+                scroll={true}
+                onClick={(e) => handleNavClick(e, item)}
                 className={`py-1 transition-colors duration-200 ${
                   isActive
                     ? "font-bold text-[#09090b]"

@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
+import ConditionalShell from "@/components/ConditionalShell";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,8 +24,7 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-white text-[#111] antialiased">
-        <Header />
-        <main className="flex-1 w-full">{children}</main>
+        <ConditionalShell>{children}</ConditionalShell>
       </body>
     </html>
   );
