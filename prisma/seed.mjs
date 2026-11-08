@@ -3,14 +3,11 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const initialStudents = [
-  { name: 'Nurul Hidayah', role: 'Ketua Kelas', image: '/images/students/student-1.jpg', order: 1 },
-  { name: 'Ahmad Fauzi', role: 'Wakil Ketua Kelas', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop', order: 2 },
-  { name: 'Siti Rahma', role: 'Sekretaris 1', image: '/images/students/student-1.jpg', order: 3 },
-  { name: 'Rian Pratama', role: 'Sekretaris 2', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop', order: 4 },
-  { name: 'Dewi Lestari', role: 'Bendahara 1', image: '/images/students/student-1.jpg', order: 5 },
-  { name: 'Budi Santoso', role: 'Bendahara 2', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop', order: 6 },
-  { name: 'Putri Anggraini', role: 'Divisi Acara', image: '/images/students/student-1.jpg', order: 7 },
-  { name: 'Dimas Saputra', role: 'Divisi Humas', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop', order: 8 },
+  { name: 'Nurul Hidayah', role: 'Ketua Kelas', image: '/images/students/student-1.webp', order: 1 },
+  { name: 'Ahmad Fauzi', role: 'Wakil Ketua Kelas', image: '/images/students/student-1.webp', order: 2 },
+  { name: 'Siti Rahma', role: 'Sekretaris 1', image: '/images/students/student-1.webp', order: 3 },
+  { name: 'Dewi Lestari', role: 'Bendahara 1', image: '/images/students/student-1.webp', order: 4 },
+  { name: 'Dimas Saputra', role: 'Divisi Humas', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop', order: 5 },
 ];
 
 const initialGallery = [

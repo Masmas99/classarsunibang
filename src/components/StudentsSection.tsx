@@ -37,16 +37,22 @@ const itemVariants: Variants = {
 
 const STUDENTS: Student[] = [
   {
+    id: 1,
+    name: "Nurul Hidayah",
+    role: "Ketua Kelas",
+    image: "/images/students/student-1.webp",
+  },
+  {
     id: 2,
     name: "Ahmad Fauzi",
     role: "Wakil Ketua Kelas",
     image: "/images/students/student-1.webp",
   },
   {
-    id: 6,
-    name: "Budi Santoso",
-    role: "Bendahara 2",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop",
+    id: 3,
+    name: "Siti Rahma",
+    role: "Sekretaris 1",
+    image: "/images/students/student-1.webp",
   },
   {
     id: 5,
@@ -59,30 +65,6 @@ const STUDENTS: Student[] = [
     name: "Dimas Saputra",
     role: "Divisi Humas",
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 1,
-    name: "Nurul Hidayah",
-    role: "Ketua Kelas",
-    image: "/images/students/student-1.webp",
-  },
-  {
-    id: 7,
-    name: "Putri Anggraini",
-    role: "Divisi Acara",
-    image: "/images/students/student-1.webp",
-  },
-  {
-    id: 4,
-    name: "Rian Pratama",
-    role: "Sekretaris 2",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    name: "Siti Rahma",
-    role: "Sekretaris 1",
-    image: "/images/students/student-1.webp",
   },
 ];
 
