@@ -24,7 +24,18 @@ export async function PUT(
     const body = await request.json();
     const { name, role, image, order } = body;
 
-    const optimizedImage = image !== undefined ? await optimizeToWebP(image, 800, 80) : undefined;
+    let optimizedImage = undefined;
+    if (image !== undefined) {
+      const cleanImage =
+        !image ||
+        image === '.' ||
+        image === '/' ||
+        image.trim() === '' ||
+        image.trim() === '-'
+          ? '/images/students/student-1.webp'
+          : image;
+      optimizedImage = await optimizeToWebP(cleanImage, 800, 80);
+    }
 
     const updatedStudent = await prisma.student.update({
       where: { id: studentId },

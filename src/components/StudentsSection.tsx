@@ -86,6 +86,22 @@ const STUDENTS: Student[] = [
   },
 ];
 
+function getStudentImage(image?: string): string {
+  if (!image || typeof image !== "string") return "/images/students/student-1.webp";
+  const trimmed = image.trim();
+  if (
+    trimmed === "." ||
+    trimmed === "/" ||
+    trimmed === "" ||
+    trimmed === "-" ||
+    trimmed === "null" ||
+    trimmed === "undefined"
+  ) {
+    return "/images/students/student-1.webp";
+  }
+  return trimmed;
+}
+
 interface StudentsSectionProps {
   initialStudents?: Student[];
 }
@@ -150,15 +166,15 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
 
   return (
     <section id="students" className="w-full py-12 sm:py-20 scroll-mt-24 border-t border-[#f0f0f0]">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.08 }}
-        variants={containerVariants}
-        className="w-full max-w-[1138px] mx-auto px-4 sm:px-8"
-      >
+      <div className="w-full max-w-[1138px] mx-auto px-4 sm:px-8">
         {/* Header Bar: Logo + CLASS ARS UNIBANG / STUDENTS */}
-        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8"
+        >
           <div className="flex items-center gap-2.5 sm:gap-3.5">
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-neutral-200/80 bg-white flex items-center justify-center p-1.5">
               <img
@@ -192,7 +208,13 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
         </motion.div>
 
         {/* Description */}
-        <motion.p variants={itemVariants} className="text-[#555] text-sm sm:text-[14.5px] leading-relaxed mb-8">
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.05 }}
+          className="text-[#555] text-sm sm:text-[14.5px] leading-relaxed mb-8"
+        >
           Daftar mahasiswa aktif Class Administrasi Rumah Sakit (ARS) UNIBANG angkatan 2025. Klik kartu untuk melihat foto dan info mahasiswa.
         </motion.p>
 
@@ -201,7 +223,10 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
           {filteredStudents.length > 0 ? (
             filteredStudents.map((student) => (
               <motion.div
-                variants={itemVariants}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "50px" }}
+                transition={{ type: "spring", stiffness: 260, damping: 20 }}
                 key={student.id}
                 onClick={() => setSelectedStudent(student)}
                 role="button"
@@ -217,13 +242,11 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
                 {/* Foto Mahasiswa */}
                 <div className="relative w-full aspect-[4/5] overflow-hidden bg-neutral-100">
                   <img
-                    src={student.image}
+                    src={getStudentImage(student.image)}
                     alt={student.name}
                     className="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
-                      if (!student.image?.startsWith("data:")) {
-                        e.currentTarget.src = "/images/students/student-1.webp";
-                      }
+                      e.currentTarget.src = "/images/students/student-1.webp";
                     }}
                   />
                 </div>
@@ -247,7 +270,7 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
             </div>
           )}
         </div>
-      </motion.div>
+      </div>
 
       {/* ── Modal Pop-up Foto & Detail Mahasiswa ── */}
       {selectedStudent && (
@@ -273,13 +296,11 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
             {/* Foto Mahasiswa dengan Gradasi Halus ke Putih di Bawah */}
             <div className="relative w-full aspect-[4/4.5] overflow-hidden bg-neutral-100">
               <img
-                src={selectedStudent.image}
+                src={getStudentImage(selectedStudent.image)}
                 alt={selectedStudent.name}
                 className="w-full h-full object-cover block"
                 onError={(e) => {
-                  if (!selectedStudent.image?.startsWith("data:")) {
-                    e.currentTarget.src = "/images/students/student-1.webp";
-                  }
+                  e.currentTarget.src = "/images/students/student-1.webp";
                 }}
               />
               <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white via-white/80 via-40% to-transparent pointer-events-none" />

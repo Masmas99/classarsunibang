@@ -48,8 +48,17 @@ export async function POST(request: Request) {
       );
     }
 
+    const cleanImage =
+      !image ||
+      image === '.' ||
+      image === '/' ||
+      image.trim() === '' ||
+      image.trim() === '-'
+        ? '/images/students/student-1.webp'
+        : image;
+
     const optimizedImage = await optimizeToWebP(
-      image || '/images/students/student-1.webp',
+      cleanImage,
       800,
       80
     );

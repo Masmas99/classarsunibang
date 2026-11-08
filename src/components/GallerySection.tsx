@@ -205,7 +205,10 @@ export default function GallerySection({ initialPhotos }: GallerySectionProps) {
     const photoIndex = photos.findIndex((p) => p.id === item.id);
     return (
       <motion.div
-        variants={itemVariants}
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "50px" }}
+        transition={{ type: "spring", stiffness: 260, damping: 20 }}
         key={`${prefix}-${item.id}`}
         onClick={() => setSelectedIndex(photoIndex)}
         role="button"
@@ -250,15 +253,15 @@ export default function GallerySection({ initialPhotos }: GallerySectionProps) {
 
   return (
     <section id="gallery" className="w-full py-12 sm:py-20 scroll-mt-24 border-t border-[#f0f0f0]">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.08 }}
-        variants={containerVariants}
-        className="w-full max-w-[1138px] mx-auto px-4 sm:px-8"
-      >
+      <div className="w-full max-w-[1138px] mx-auto px-4 sm:px-8">
         {/* Header Bar: Icon Gallery + CLASS ARS UNIBANG / GALLERY */}
-        <motion.div variants={itemVariants} className="flex items-center gap-2.5 sm:gap-3.5 mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          className="flex items-center gap-2.5 sm:gap-3.5 mb-6"
+        >
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-neutral-200/80 bg-white flex items-center justify-center p-2">
             <img
               src="/images/logo-gallery.webp"
@@ -278,7 +281,13 @@ export default function GallerySection({ initialPhotos }: GallerySectionProps) {
         </motion.div>
 
         {/* Description */}
-        <motion.p variants={itemVariants} className="text-[#555] text-sm sm:text-[14.5px] leading-relaxed mb-8">
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.05 }}
+          className="text-[#555] text-sm sm:text-[14.5px] leading-relaxed mb-8"
+        >
           Dokumentasi momen kebersamaan, kegiatan akademik, dan aktivitas mahasiswa Class Administrasi Rumah Sakit UNIBANG.
         </motion.p>
 
@@ -308,7 +317,7 @@ export default function GallerySection({ initialPhotos }: GallerySectionProps) {
             {desktopCol4.map((item) => renderPhotoCard(item, "desk-col4"))}
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* ── Modal Lightbox Preview Foto (Full Gambar dengan Navigasi Next & Prev di Bawahnya) ── */}
       {selectedPhoto && (

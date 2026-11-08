@@ -18,13 +18,15 @@ async function getStudents() {
   "use cache";
   try {
     const list = await prisma.student.findMany();
-    return list.sort((a, b) =>
-      a.name.localeCompare(b.name, "id", { sensitivity: "base" })
-    );
+    if (list && list.length > 0) {
+      return list.sort((a, b) =>
+        a.name.localeCompare(b.name, "id", { sensitivity: "base" })
+      );
+    }
   } catch (error) {
     console.error("Failed to load students on server:", error);
-    return [];
   }
+  return [];
 }
 
 export default async function StudentsPage() {
