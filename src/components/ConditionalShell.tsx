@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState } from "react";
 import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer1 from "@/components/ui/footer-section-1";
+import LoadingScreen from "@/components/LoadingScreen";
 
 interface NotFoundContextType {
   setIsNotFound: (val: boolean) => void;
@@ -34,6 +35,7 @@ export default function ConditionalShell({
 
   return (
     <NotFoundContext.Provider value={{ setIsNotFound }}>
+      <LoadingScreen />
       <Header />
       <main className="flex-1 w-full">{children}</main>
       <Footer1 />
