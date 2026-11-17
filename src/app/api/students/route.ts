@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import prisma from '@/lib/prisma';
+import prisma, { withDbRetry } from '@/lib/prisma';
 import { getAdminSession } from '@/lib/auth';
 import { optimizeToWebP } from '@/lib/image-utils';
 import { INITIAL_STUDENTS } from '@/lib/initial-data';
@@ -8,9 +8,11 @@ import { INITIAL_STUDENTS } from '@/lib/initial-data';
 // Public GET: List all students sorted A-Z (case-insensitive)
 export async function GET() {
   try {
-    const students = await prisma.student.findMany({
-      orderBy: { id: 'asc' },
-    });
+    const students = await withDbRetry(() =>
+      prisma.student.findMany({
+        orderBy: { id: 'asc' },
+      })
+    );
 
     if (students && students.length > 0) {
       const sanitized = students.map((s) => ({
@@ -25,9 +27,7 @@ export async function GET() {
 
       return NextResponse.json(sanitized, {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=600',
         },
       });
     }
@@ -43,9 +43,7 @@ export async function GET() {
 
   return NextResponse.json(fallback, {
     headers: {
-      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0',
+      'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
     },
   });
 }

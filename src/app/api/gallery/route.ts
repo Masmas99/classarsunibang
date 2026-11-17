@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import prisma from '@/lib/prisma';
+import prisma, { withDbRetry } from '@/lib/prisma';
 import { getAdminSession } from '@/lib/auth';
 import { optimizeToWebP } from '@/lib/image-utils';
 
@@ -15,9 +15,11 @@ function getCleanGallerySrc(src?: string, id: number = 1): string {
 // Public GET: List all gallery photos
 export async function GET() {
   try {
-    const galleryItems = await prisma.gallery.findMany({
-      orderBy: { id: 'asc' },
-    });
+    const galleryItems = await withDbRetry(() =>
+      prisma.gallery.findMany({
+        orderBy: { id: 'asc' },
+      })
+    );
 
     const sanitized = galleryItems.map((item) => ({
       ...item,
@@ -26,9 +28,7 @@ export async function GET() {
 
     return NextResponse.json(sanitized, {
       headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0',
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=600',
       },
     });
   } catch (error) {

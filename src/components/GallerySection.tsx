@@ -142,17 +142,19 @@ export default function GallerySection({ initialPhotos }: GallerySectionProps) {
     }
   }, [initialPhotos]);
 
-  // Keep photos in sync with Neon database in the background without layout flicker
+  // Fetch fresh photos only if initialPhotos was not provided by SSR
   useEffect(() => {
-    fetch("/api/gallery", { cache: "no-store" })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setPhotos(data);
-        }
-      })
-      .catch(() => {});
-  }, []);
+    if (!initialPhotos || initialPhotos.length === 0) {
+      fetch("/api/gallery")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (Array.isArray(data) && data.length > 0) {
+            setPhotos(data);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialPhotos]);
 
   const selectedPhoto = selectedIndex !== null ? photos[selectedIndex] : null;
 

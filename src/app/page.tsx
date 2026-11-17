@@ -2,17 +2,19 @@ import TiltedGridHeroDemo from "@/components/ui/tilted-grid-hero-demo";
 import AboutSection from "@/components/AboutSection";
 import StudentsSection, { Student } from "@/components/StudentsSection";
 import GallerySection, { GalleryItem } from "@/components/GallerySection";
-import prisma from "@/lib/prisma";
+import prisma, { withDbRetry } from "@/lib/prisma";
 import { INITIAL_STUDENTS, INITIAL_GALLERY } from "@/lib/initial-data";
 
 async function getStudents(): Promise<Student[]> {
   "use cache";
   try {
-    const query = prisma.student.findMany({
-      orderBy: { id: "asc" },
-    });
+    const query = withDbRetry(() =>
+      prisma.student.findMany({
+        orderBy: { id: "asc" },
+      })
+    );
     const timeout = new Promise<Student[]>((resolve) =>
-      setTimeout(() => resolve([]), 2000)
+      setTimeout(() => resolve([]), 8000)
     );
     const list = await Promise.race([query, timeout]);
     if (list && list.length > 0) {
@@ -51,11 +53,13 @@ function getCleanGallerySrc(src?: string, id: number = 1): string {
 async function getGallery(): Promise<GalleryItem[]> {
   "use cache";
   try {
-    const query = prisma.gallery.findMany({
-      orderBy: { id: "asc" },
-    });
+    const query = withDbRetry(() =>
+      prisma.gallery.findMany({
+        orderBy: { id: "asc" },
+      })
+    );
     const timeout = new Promise<GalleryItem[]>((resolve) =>
-      setTimeout(() => resolve([]), 2000)
+      setTimeout(() => resolve([]), 8000)
     );
     const list = await Promise.race([query, timeout]);
     if (list && list.length > 0) {

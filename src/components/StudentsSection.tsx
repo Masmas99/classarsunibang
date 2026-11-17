@@ -75,17 +75,19 @@ export default function StudentsSection({ initialStudents }: StudentsSectionProp
     }
   }, [initialStudents]);
 
-  // Keep students in sync with Neon database in the background without layout flicker
+  // Fetch fresh students only if initialStudents was not provided by SSR
   useEffect(() => {
-    fetch("/api/students", { cache: "no-store" })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setStudentsList(data);
-        }
-      })
-      .catch(() => {});
-  }, []);
+    if (!initialStudents || initialStudents.length === 0) {
+      fetch("/api/students")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (Array.isArray(data) && data.length > 0) {
+            setStudentsList(data);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialStudents]);
 
   // Close modal on Escape key & manage body scroll
   useEffect(() => {

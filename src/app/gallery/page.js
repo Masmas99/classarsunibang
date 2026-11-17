@@ -1,5 +1,5 @@
 import GallerySection from "@/components/GallerySection";
-import prisma from "@/lib/prisma";
+import prisma, { withDbRetry } from "@/lib/prisma";
 import { INITIAL_GALLERY } from "@/lib/initial-data";
 
 export const metadata = {
@@ -26,11 +26,13 @@ function getCleanGallerySrc(src, id = 1) {
 async function getGallery() {
   "use cache";
   try {
-    const query = prisma.gallery.findMany({
-      orderBy: { id: "asc" },
-    });
+    const query = withDbRetry(() =>
+      prisma.gallery.findMany({
+        orderBy: { id: "asc" },
+      })
+    );
     const timeout = new Promise((resolve) =>
-      setTimeout(() => resolve([]), 2000)
+      setTimeout(() => resolve([]), 8000)
     );
     const list = await Promise.race([query, timeout]);
     if (list && list.length > 0) {

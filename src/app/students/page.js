@@ -1,5 +1,5 @@
 import StudentsSection from "@/components/StudentsSection";
-import prisma from "@/lib/prisma";
+import prisma, { withDbRetry } from "@/lib/prisma";
 import { INITIAL_STUDENTS } from "@/lib/initial-data";
 
 export const metadata = {
@@ -18,11 +18,13 @@ export const metadata = {
 async function getStudents() {
   "use cache";
   try {
-    const query = prisma.student.findMany({
-      orderBy: { id: "asc" },
-    });
+    const query = withDbRetry(() =>
+      prisma.student.findMany({
+        orderBy: { id: "asc" },
+      })
+    );
     const timeout = new Promise((resolve) =>
-      setTimeout(() => resolve([]), 2000)
+      setTimeout(() => resolve([]), 8000)
     );
     const list = await Promise.race([query, timeout]);
     if (list && list.length > 0) {
