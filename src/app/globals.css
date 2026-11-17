@@ -56,9 +56,9 @@ body {
     pointer-events: auto;
   }
   100% {
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
   }
 }
 

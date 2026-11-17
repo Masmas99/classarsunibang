@@ -30,10 +30,25 @@ export async function GET(request: Request) {
       }
     }
 
+    // Clean base64 from gallery items
+    const galleries = await prisma.gallery.findMany();
+    let cleanedGalleries = 0;
+    for (const g of galleries) {
+      if (g.src && (g.src.startsWith('data:') || g.src.length > 500)) {
+        const fallbackIndex = ((Math.abs(g.id) - 1) % 5) + 1;
+        await prisma.gallery.update({
+          where: { id: g.id },
+          data: { src: `/images/gallery/hero-ars-${fallbackIndex}.webp` },
+        });
+        cleanedGalleries++;
+      }
+    }
+
     return NextResponse.json({
       success: true,
-      message: `Pruned database to 5 students. Deleted ${deletedCount} extra records.`,
-      remaining: Math.min(5, all.length),
+      message: `Pruned database: ${deletedCount} students deleted, ${cleanedGalleries} gallery images sanitized.`,
+      remainingStudents: Math.min(5, all.length),
+      remainingGalleries: galleries.length,
     });
   } catch (error) {
     console.error('Failed to prune database:', error);

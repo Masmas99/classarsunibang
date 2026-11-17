@@ -4,13 +4,27 @@ import prisma from '@/lib/prisma';
 import { getAdminSession } from '@/lib/auth';
 import { optimizeToWebP } from '@/lib/image-utils';
 
+function getCleanGallerySrc(src?: string, id: number = 1): string {
+  if (!src || src.startsWith('data:') || src.length > 500) {
+    const fallbackIndex = ((Math.abs(id) - 1) % 5) + 1;
+    return `/images/gallery/hero-ars-${fallbackIndex}.webp`;
+  }
+  return src;
+}
+
 // Public GET: List all gallery photos
 export async function GET() {
   try {
     const galleryItems = await prisma.gallery.findMany({
       orderBy: { id: 'asc' },
     });
-    return NextResponse.json(galleryItems, {
+
+    const sanitized = galleryItems.map((item) => ({
+      ...item,
+      src: getCleanGallerySrc(item.src, item.id),
+    }));
+
+    return NextResponse.json(sanitized, {
       headers: {
         'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
         'Pragma': 'no-cache',

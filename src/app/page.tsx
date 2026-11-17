@@ -36,6 +36,14 @@ async function getStudents(): Promise<Student[]> {
   return [];
 }
 
+function getCleanGallerySrc(src?: string, id: number = 1): string {
+  if (!src || src.startsWith("data:") || src.length > 500) {
+    const fallbackIndex = ((Math.abs(id) - 1) % 5) + 1;
+    return `/images/gallery/hero-ars-${fallbackIndex}.webp`;
+  }
+  return src;
+}
+
 async function getGallery(): Promise<GalleryItem[]> {
   "use cache";
   try {
@@ -50,7 +58,7 @@ async function getGallery(): Promise<GalleryItem[]> {
     if (list && list.length > 0) {
       return list.map((item) => ({
         id: item.id,
-        src: item.src,
+        src: getCleanGallerySrc(item.src, item.id),
         alt: item.alt,
         title: item.title,
       }));
