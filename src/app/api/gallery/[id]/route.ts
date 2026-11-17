@@ -38,6 +38,8 @@ export async function PUT(
 
     revalidatePath('/');
     revalidatePath('/gallery');
+    revalidatePath('/api/gallery');
+    revalidatePath('/admin');
 
     return NextResponse.json(updatedItem);
   } catch (error) {
@@ -72,6 +74,8 @@ export async function DELETE(
 
     revalidatePath('/');
     revalidatePath('/gallery');
+    revalidatePath('/api/gallery');
+    revalidatePath('/admin');
 
     return NextResponse.json({ success: true, message: 'Foto galeri berhasil dihapus' });
   } catch (error) {

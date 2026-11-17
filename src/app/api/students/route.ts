@@ -27,7 +27,9 @@ export async function GET() {
 
       return NextResponse.json(sanitized, {
         headers: {
-          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=600',
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
         },
       });
     }
@@ -43,7 +45,9 @@ export async function GET() {
 
   return NextResponse.json(fallback, {
     headers: {
-      'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
     },
   });
 }
@@ -92,6 +96,8 @@ export async function POST(request: Request) {
 
     revalidatePath('/');
     revalidatePath('/students');
+    revalidatePath('/api/students');
+    revalidatePath('/admin');
 
     return NextResponse.json(newStudent, { status: 201 });
   } catch (error) {

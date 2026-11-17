@@ -135,9 +135,10 @@ export default function AdminDashboardPage() {
   const fetchData = async () => {
     setLoadingData(true);
     try {
+      const t = Date.now();
       const [resStudents, resGallery] = await Promise.all([
-        fetch("/api/students", { cache: "no-store" }),
-        fetch("/api/gallery", { cache: "no-store" }),
+        fetch(`/api/students?t=${t}`, { cache: "no-store" }),
+        fetch(`/api/gallery?t=${t}`, { cache: "no-store" }),
       ]);
       if (resStudents.ok) {
         const data = await resStudents.json();
@@ -257,7 +258,7 @@ export default function AdminDashboardPage() {
         image: student.image,
         order: student.order,
       });
-      setStudentImageMode(student.image.startsWith("data:") ? "upload" : "url");
+      setStudentImageMode(student.image && student.image.startsWith("data:") ? "upload" : "url");
     } else {
       setEditingStudent(null);
       setIsCustomRole(false);
@@ -290,6 +291,10 @@ export default function AdminDashboardPage() {
           body: JSON.stringify(studentForm),
         });
         if (!res.ok) throw new Error("Gagal mengupdate mahasiswa");
+        const updated = await res.json();
+        setStudents((prev) =>
+          prev.map((s) => (s.id === updated.id ? { ...s, ...updated } : s))
+        );
         showToast("success", "Data mahasiswa berhasil diperbarui");
       } else {
         // Create
@@ -299,6 +304,8 @@ export default function AdminDashboardPage() {
           body: JSON.stringify(studentForm),
         });
         if (!res.ok) throw new Error("Gagal menambahkan mahasiswa");
+        const created = await res.json();
+        setStudents((prev) => [...prev, created]);
         showToast("success", "Mahasiswa baru berhasil ditambahkan");
       }
       setStudentModalOpen(false);
@@ -356,6 +363,10 @@ export default function AdminDashboardPage() {
           body: JSON.stringify(galleryForm),
         });
         if (!res.ok) throw new Error("Gagal mengupdate galeri");
+        const updated = await res.json();
+        setGallery((prev) =>
+          prev.map((g) => (g.id === updated.id ? { ...g, ...updated } : g))
+        );
         showToast("success", "Foto galeri berhasil diperbarui");
       } else {
         // Create
@@ -365,6 +376,8 @@ export default function AdminDashboardPage() {
           body: JSON.stringify(galleryForm),
         });
         if (!res.ok) throw new Error("Gagal menambahkan foto galeri");
+        const created = await res.json();
+        setGallery((prev) => [created, ...prev]);
         showToast("success", "Foto baru berhasil ditambahkan ke galeri");
       }
       setGalleryModalOpen(false);
@@ -393,6 +406,12 @@ export default function AdminDashboardPage() {
 
       const res = await fetch(endpoint, { method: "DELETE" });
       if (!res.ok) throw new Error("Gagal menghapus data");
+
+      if (deleteConfirm.type === "student") {
+        setStudents((prev) => prev.filter((s) => s.id !== deleteConfirm.id));
+      } else {
+        setGallery((prev) => prev.filter((g) => g.id !== deleteConfirm.id));
+      }
 
       showToast(
         "success",

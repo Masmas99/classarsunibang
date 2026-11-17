@@ -49,6 +49,8 @@ export async function PUT(
 
     revalidatePath('/');
     revalidatePath('/students');
+    revalidatePath('/api/students');
+    revalidatePath('/admin');
 
     return NextResponse.json(updatedStudent);
   } catch (error) {
@@ -83,6 +85,8 @@ export async function DELETE(
 
     revalidatePath('/');
     revalidatePath('/students');
+    revalidatePath('/api/students');
+    revalidatePath('/admin');
 
     return NextResponse.json({ success: true, message: 'Mahasiswa berhasil dihapus' });
   } catch (error) {

@@ -28,7 +28,9 @@ export async function GET() {
 
     return NextResponse.json(sanitized, {
       headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=600',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
       },
     });
   } catch (error) {
@@ -75,6 +77,8 @@ export async function POST(request: Request) {
 
     revalidatePath('/');
     revalidatePath('/gallery');
+    revalidatePath('/api/gallery');
+    revalidatePath('/admin');
 
     return NextResponse.json(newItem, { status: 201 });
   } catch (error) {
