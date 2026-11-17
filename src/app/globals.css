@@ -49,3 +49,27 @@ body {
 .animate-marquee-smooth:hover {
   animation-play-state: paused;
 }
+
+@keyframes ars-loader-dismiss {
+  0%, 75% {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  100% {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+}
+
+@keyframes ars-progress-fill {
+  0% {
+    width: 0%;
+  }
+  65% {
+    width: 82%;
+  }
+  100% {
+    width: 100%;
+  }
+}

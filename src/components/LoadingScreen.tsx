@@ -4,59 +4,87 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 export default function LoadingScreen() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Lock scroll while loading
+    // Only show on first visit in the current session
+    try {
+      if (sessionStorage.getItem("ars_intro_seen") === "true") {
+        setIsVisible(false);
+        return;
+      }
+    } catch {
+      // sessionStorage unavailable
+    }
+
+    // Lock scroll temporarily
     document.body.style.overflow = "hidden";
 
-    // Smooth incremental progress simulation
+    const duration = 1000; // 1s smooth loading
     const startTime = Date.now();
-    const duration = 1200; // 1.2 seconds smooth load
 
     const interval = setInterval(() => {
       const elapsed = Date.now() - startTime;
-      const rawProgress = Math.min(100, (elapsed / duration) * 100);
-
-      // Ease-out easing curve for natural feeling
-      const eased = Math.round(100 * (1 - Math.pow(1 - rawProgress / 100, 2)));
+      const ratio = Math.min(1, elapsed / duration);
+      // Smooth ease-out
+      const eased = Math.round(100 * (1 - Math.pow(1 - ratio, 2.5)));
       setProgress(Math.min(100, eased));
 
-      if (elapsed >= duration) {
+      if (ratio >= 1) {
         clearInterval(interval);
-        setTimeout(() => {
-          setIsLoading(false);
-          document.body.style.overflow = "unset";
-        }, 250);
       }
     }, 20);
 
+    // Fade out and mark session as seen after 1.25s
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+      document.body.style.overflow = "unset";
+      try {
+        sessionStorage.setItem("ars_intro_seen", "true");
+      } catch {}
+    }, 1250);
+
+    // Hard fallback safety: unlock scroll & hide after 1.8s
+    const fallbackTimer = setTimeout(() => {
+      document.body.style.overflow = "unset";
+      setIsVisible(false);
+    }, 1800);
+
     return () => {
       clearInterval(interval);
+      clearTimeout(timer);
+      clearTimeout(fallbackTimer);
       document.body.style.overflow = "unset";
     };
   }, []);
 
+  if (!isVisible) {
+    return null;
+  }
+
   return (
     <AnimatePresence>
-      {isLoading && (
+      {isVisible && (
         <motion.div
-          key="loading-screen"
+          key="ars-loading-screen"
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
             scale: 1.02,
-            transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+            transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
           }}
           className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center p-6 select-none pointer-events-auto"
+          style={{
+            animation: "ars-loader-dismiss 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+          }}
         >
           {/* Subtle Ambient Glow */}
           <div className="absolute w-72 h-72 rounded-full bg-neutral-100/80 blur-3xl -z-10 pointer-events-none" />
 
           {/* Logo Card with Pulse */}
           <motion.div
-            initial={{ scale: 0.85, opacity: 0 }}
+            initial={{ scale: 0.88, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{
               type: "spring",
@@ -93,7 +121,7 @@ export default function LoadingScreen() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.4 }}
+            transition={{ delay: 0.1, duration: 0.35 }}
             className="flex flex-col items-center mt-6 text-center"
           >
             <h1 className="text-[15px] sm:text-base font-extrabold uppercase text-[#111] tracking-widest">
@@ -108,13 +136,16 @@ export default function LoadingScreen() {
           <motion.div
             initial={{ opacity: 0, scaleX: 0.9 }}
             animate={{ opacity: 1, scaleX: 1 }}
-            transition={{ delay: 0.25, duration: 0.3 }}
+            transition={{ delay: 0.2, duration: 0.3 }}
             className="w-44 sm:w-52 mt-7 flex flex-col items-center"
           >
             <div className="w-full h-1 bg-neutral-100 rounded-full overflow-hidden border border-neutral-200/60 p-[1px]">
               <motion.div
                 className="h-full bg-[#0b2545] rounded-full"
-                style={{ width: `${progress}%` }}
+                style={{
+                  width: `${progress}%`,
+                  animation: "ars-progress-fill 1.1s cubic-bezier(0.1, 0.5, 0.2, 1) forwards",
+                }}
                 transition={{ ease: "easeOut" }}
               />
             </div>
