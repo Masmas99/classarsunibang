@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, type Variants } from "motion/react";
+import { INITIAL_GALLERY } from "@/lib/initial-data";
 
 export interface GalleryItem {
   id: number;
@@ -119,12 +120,7 @@ const COLUMN_4: GalleryItem[] = [
   },
 ];
 
-const ALL_PHOTOS: GalleryItem[] = [
-  ...COLUMN_1,
-  ...COLUMN_2,
-  ...COLUMN_3,
-  ...COLUMN_4,
-];
+const ALL_PHOTOS: GalleryItem[] = INITIAL_GALLERY;
 
 interface GallerySectionProps {
   initialPhotos?: GalleryItem[];

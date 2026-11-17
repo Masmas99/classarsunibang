@@ -1,5 +1,6 @@
 import StudentsSection from "@/components/StudentsSection";
 import prisma from "@/lib/prisma";
+import { INITIAL_STUDENTS } from "@/lib/initial-data";
 
 export const metadata = {
   title: "Daftar Mahasiswa",
@@ -18,7 +19,6 @@ async function getStudents() {
   "use cache";
   try {
     const query = prisma.student.findMany({
-      take: 5,
       orderBy: { id: "asc" },
     });
     const timeout = new Promise((resolve) =>
@@ -43,7 +43,14 @@ async function getStudents() {
   } catch (error) {
     console.error("Failed to load students on server:", error);
   }
-  return [];
+  return INITIAL_STUDENTS.map((s) => ({
+    id: s.id,
+    name: s.name,
+    role: s.role,
+    image: s.image,
+  })).sort((a, b) =>
+    a.name.localeCompare(b.name, "id", { sensitivity: "base" })
+  );
 }
 
 export default async function StudentsPage() {

@@ -1,5 +1,6 @@
 import GallerySection from "@/components/GallerySection";
 import prisma from "@/lib/prisma";
+import { INITIAL_GALLERY } from "@/lib/initial-data";
 
 export const metadata = {
   title: "Galeri Foto",
@@ -26,7 +27,6 @@ async function getGallery() {
   "use cache";
   try {
     const query = prisma.gallery.findMany({
-      take: 20,
       orderBy: { id: "asc" },
     });
     const timeout = new Promise((resolve) =>
@@ -44,7 +44,12 @@ async function getGallery() {
   } catch (error) {
     console.error("Failed to load gallery on server:", error);
   }
-  return [];
+  return INITIAL_GALLERY.map((item) => ({
+    id: item.id,
+    src: getCleanGallerySrc(item.src, item.id),
+    alt: item.alt,
+    title: item.title,
+  }));
 }
 
 export default async function GalleryPage() {

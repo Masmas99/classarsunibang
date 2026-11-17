@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Search, X } from "lucide-react";
 import { motion, type Variants } from "motion/react";
+import { INITIAL_STUDENTS } from "@/lib/initial-data";
 
 export interface Student {
   id: number;
@@ -35,38 +36,7 @@ const itemVariants: Variants = {
   },
 };
 
-const STUDENTS: Student[] = [
-  {
-    id: 1,
-    name: "Nurul Hidayah",
-    role: "Ketua Kelas",
-    image: "/images/students/student-1.webp",
-  },
-  {
-    id: 2,
-    name: "Ahmad Fauzi",
-    role: "Wakil Ketua Kelas",
-    image: "/images/students/student-1.webp",
-  },
-  {
-    id: 3,
-    name: "Siti Rahma",
-    role: "Sekretaris 1",
-    image: "/images/students/student-1.webp",
-  },
-  {
-    id: 5,
-    name: "Dewi Lestari",
-    role: "Bendahara 1",
-    image: "/images/students/student-1.webp",
-  },
-  {
-    id: 8,
-    name: "Dimas Saputra",
-    role: "Divisi Humas",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop",
-  },
-];
+const STUDENTS: Student[] = INITIAL_STUDENTS;
 
 function getStudentImage(image?: string): string {
   if (!image || typeof image !== "string") return "/images/students/student-1.webp";
