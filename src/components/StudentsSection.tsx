@@ -77,7 +77,9 @@ function getStudentImage(image?: string): string {
     trimmed === "" ||
     trimmed === "-" ||
     trimmed === "null" ||
-    trimmed === "undefined"
+    trimmed === "undefined" ||
+    trimmed.startsWith("data:") ||
+    trimmed.length > 500
   ) {
     return "/images/students/student-1.webp";
   }

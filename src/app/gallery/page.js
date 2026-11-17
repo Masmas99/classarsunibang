@@ -17,9 +17,14 @@ export const metadata = {
 async function getGallery() {
   "use cache";
   try {
-    const list = await prisma.gallery.findMany({
+    const query = prisma.gallery.findMany({
+      take: 20,
       orderBy: { id: "asc" },
     });
+    const timeout = new Promise((resolve) =>
+      setTimeout(() => resolve([]), 2000)
+    );
+    const list = await Promise.race([query, timeout]);
     if (list && list.length > 0) {
       return list.map((item) => ({
         id: item.id,

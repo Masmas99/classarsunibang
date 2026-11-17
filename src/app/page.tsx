@@ -7,11 +7,28 @@ import prisma from "@/lib/prisma";
 async function getStudents(): Promise<Student[]> {
   "use cache";
   try {
-    const list = await prisma.student.findMany();
+    const query = prisma.student.findMany({
+      take: 5,
+      orderBy: { id: "asc" },
+    });
+    const timeout = new Promise<Student[]>((resolve) =>
+      setTimeout(() => resolve([]), 2000)
+    );
+    const list = await Promise.race([query, timeout]);
     if (list && list.length > 0) {
-      return list.sort((a, b) =>
-        a.name.localeCompare(b.name, "id", { sensitivity: "base" })
-      );
+      return list
+        .map((s) => ({
+          id: s.id,
+          name: s.name,
+          role: s.role,
+          image:
+            s.image && !s.image.startsWith("data:") && s.image.length < 500
+              ? s.image
+              : "/images/students/student-1.webp",
+        }))
+        .sort((a, b) =>
+          a.name.localeCompare(b.name, "id", { sensitivity: "base" })
+        );
     }
   } catch (error) {
     console.error("Failed to load students on server:", error);
@@ -22,9 +39,14 @@ async function getStudents(): Promise<Student[]> {
 async function getGallery(): Promise<GalleryItem[]> {
   "use cache";
   try {
-    const list = await prisma.gallery.findMany({
+    const query = prisma.gallery.findMany({
+      take: 20,
       orderBy: { id: "asc" },
     });
+    const timeout = new Promise<GalleryItem[]>((resolve) =>
+      setTimeout(() => resolve([]), 2000)
+    );
+    const list = await Promise.race([query, timeout]);
     if (list && list.length > 0) {
       return list.map((item) => ({
         id: item.id,
