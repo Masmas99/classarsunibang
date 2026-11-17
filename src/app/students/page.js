@@ -31,10 +31,7 @@ async function getStudents() {
           id: s.id,
           name: s.name,
           role: s.role,
-          image:
-            s.image && !s.image.startsWith("data:") && s.image.length < 500
-              ? s.image
-              : "/images/students/student-1.webp",
+          image: s.image && s.image.trim() !== "" ? s.image : "/images/students/student-1.webp",
         }))
         .sort((a, b) =>
           a.name.localeCompare(b.name, "id", { sensitivity: "base" })

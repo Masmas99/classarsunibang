@@ -21,10 +21,7 @@ async function getStudents(): Promise<Student[]> {
           id: s.id,
           name: s.name,
           role: s.role,
-          image:
-            s.image && !s.image.startsWith("data:") && s.image.length < 500
-              ? s.image
-              : "/images/students/student-1.webp",
+          image: s.image && s.image.trim() !== "" ? s.image : "/images/students/student-1.webp",
         }))
         .sort((a, b) =>
           a.name.localeCompare(b.name, "id", { sensitivity: "base" })
@@ -44,7 +41,7 @@ async function getStudents(): Promise<Student[]> {
 }
 
 function getCleanGallerySrc(src?: string, id: number = 1): string {
-  if (!src || src.startsWith("data:") || src.length > 500) {
+  if (!src || src.trim() === "") {
     const fallbackIndex = ((Math.abs(id) - 1) % 5) + 1;
     return `/images/gallery/hero-ars-${fallbackIndex}.webp`;
   }

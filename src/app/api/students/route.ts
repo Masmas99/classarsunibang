@@ -15,10 +15,7 @@ export async function GET() {
     if (students && students.length > 0) {
       const sanitized = students.map((s) => ({
         ...s,
-        image:
-          s.image && !s.image.startsWith('data:') && s.image.length < 500
-            ? s.image
-            : '/images/students/student-1.webp',
+        image: s.image && s.image.trim() !== '' ? s.image : '/images/students/student-1.webp',
       }));
 
       // Sort alphabetically A to Z (case-insensitive)

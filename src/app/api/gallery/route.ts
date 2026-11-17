@@ -5,7 +5,7 @@ import { getAdminSession } from '@/lib/auth';
 import { optimizeToWebP } from '@/lib/image-utils';
 
 function getCleanGallerySrc(src?: string, id: number = 1): string {
-  if (!src || src.startsWith('data:') || src.length > 500) {
+  if (!src || src.trim() === '') {
     const fallbackIndex = ((Math.abs(id) - 1) % 5) + 1;
     return `/images/gallery/hero-ars-${fallbackIndex}.webp`;
   }

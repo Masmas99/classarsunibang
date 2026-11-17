@@ -16,7 +16,7 @@ export const metadata = {
 };
 
 function getCleanGallerySrc(src, id = 1) {
-  if (!src || src.startsWith("data:") || src.length > 500) {
+  if (!src || src.trim() === "") {
     const fallbackIndex = ((Math.abs(id) - 1) % 5) + 1;
     return `/images/gallery/hero-ars-${fallbackIndex}.webp`;
   }
