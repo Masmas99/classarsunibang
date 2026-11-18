@@ -65,6 +65,7 @@ export default function Header() {
                 key={item.name}
                 href={item.href}
                 scroll={true}
+                aria-current={isActive ? "page" : undefined}
                 onClick={(e) => handleNavClick(e, item)}
                 className={`py-1 transition-colors duration-200 ${
                   isActive
