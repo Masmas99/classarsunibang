@@ -24,6 +24,20 @@ export async function PUT(
     const body = await request.json();
     const { name, role, image, order } = body;
 
+    if (name !== undefined && (typeof name !== 'string' || name.trim() === '')) {
+      return NextResponse.json(
+        { error: 'Nama tidak boleh kosong' },
+        { status: 400 }
+      );
+    }
+
+    if (role !== undefined && (typeof role !== 'string' || role.trim() === '')) {
+      return NextResponse.json(
+        { error: 'Peran (role) tidak boleh kosong' },
+        { status: 400 }
+      );
+    }
+
     let optimizedImage = undefined;
     if (image !== undefined) {
       const cleanImage =

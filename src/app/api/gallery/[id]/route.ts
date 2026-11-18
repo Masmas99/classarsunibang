@@ -24,6 +24,13 @@ export async function PUT(
     const body = await request.json();
     const { src, alt, title, order } = body;
 
+    if (title !== undefined && (typeof title !== 'string' || title.trim() === '')) {
+      return NextResponse.json(
+        { error: 'Judul (title) tidak boleh kosong' },
+        { status: 400 }
+      );
+    }
+
     const optimizedSrc = src !== undefined ? await optimizeToWebP(src, 1200, 80) : undefined;
 
     const updatedItem = await prisma.gallery.update({
